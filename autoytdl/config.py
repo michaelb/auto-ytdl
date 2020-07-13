@@ -4,6 +4,7 @@ import toml
 
 
 class Config:
+
     def __init__(self):
         # defaults parameters
         path_to_home = str(Path.home())
@@ -20,7 +21,7 @@ class Config:
         self.use_metadata_archive = True
         self.metadata_archive_path = config_directory + "metadata_archive.txt"
         self.auto_update_frequency = 0
-        self.url_list = {"1", "2", "3"}
+        self.url_list = {}
         self.youtube_dl_args = {"ignore-errors": True,
                                 "max-downloads": 150,
                                 "max-filesize": "15M",
@@ -38,8 +39,17 @@ class Config:
                                 "embed-thumbnail": True,
                                 "playlist-end": 100}
 
-    def write_to_file(self):
+    def load(self):
+        # check if config file already present, if so load it, else create it
+        config_file_path = str(Path.home())+"/.config/auto-ytdl/config.toml"
+        if os.path.isfile(config_file_path):
+            config_dict = toml.load(config_file_path)
+            self.__dict__ = config_dict
+        else:
+            self.write_to_file()
+
+    def write(self):
         config_file_path = str(Path.home())+"/.config/auto-ytdl/config.toml"
         with open(config_file_path, "w+") as f:
-            to_write = self.__dict__
+            to_write = vars(self)
             f.write(toml.dumps(to_write))

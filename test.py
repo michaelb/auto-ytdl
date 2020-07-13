@@ -1,3 +1,4 @@
 from autoytdl.config import Config
 c = Config()
-c.write_to_file()
+c.load()
+print(c.youtube_dl_args)
