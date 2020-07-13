@@ -21,7 +21,7 @@ class Config:
         self.use_metadata_archive = True
         self.metadata_archive_path = config_directory + "metadata_archive.txt"
         self.auto_update_frequency = 0
-        self.url_list = {}
+        self.url_list = []
         self.youtube_dl_args = {"ignore-errors": True,
                                 "max-downloads": 150,
                                 "max-filesize": "15M",
@@ -46,7 +46,7 @@ class Config:
             config_dict = toml.load(config_file_path)
             self.__dict__ = config_dict
         else:
-            self.write_to_file()
+            self.write()
 
     def write(self):
         config_file_path = str(Path.home())+"/.config/auto-ytdl/config.toml"

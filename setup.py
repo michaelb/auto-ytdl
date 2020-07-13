@@ -22,7 +22,7 @@ setup(
     install_requires=['youtube-dl'],
     entry_points={
         'console_scripts': [
-            'auto-ytdl = auto_ytdl.AYTDL:main'
+            'aytdl = AYTDL:main'
         ]
     },
     include_package_data=True,
