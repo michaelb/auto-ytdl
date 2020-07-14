@@ -22,7 +22,7 @@ setup(
     install_requires=['youtube-dl', 'ffmpeg'],
     entry_points={
         'console_scripts': [
-            'auto-ytdl = autoytdl.AYTDL:main'
+            'aytdl = autoytdl.AYTDL:main'
         ]
     },
     include_package_data=True,
