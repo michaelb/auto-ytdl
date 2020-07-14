@@ -1,9 +1,12 @@
 import sys
 import os
 import re
-from pathlib import Path, PurePath
+from pathlib import Path
 from autoytdl.config import Config
 from autoytdl.arguments import get_args
+from autoytdl.metadata_manager import should_add
+from autoytdl.name_cleaner import clean
+from datetime import date
 
 
 class AYTDL:
@@ -13,20 +16,54 @@ class AYTDL:
 
         self.args = get_args()
 
-    def update(url, dateafter):
-        print("Not implemeted yet")
+    def download_to_temp(self, url, dateafter):
+        def prepare_ytdl_commmand_line(dateafter):
+            line = ""
+            for key, value in self.config.youtube_dl_args.items():
+                if key == "datefater":
+                    continue
+                line += " "
+                if value is True:
+                    line += "--" + key
+                elif value is False:
+                    pass
+                else:
+                    line += "--" + key + " " + str(value)
+            # special case because it is updated or not for
+            line += " --dateafter " + str(dateafter)
+            return line
+        exit_code = os.system("youtube-dl " +
+                              prepare_ytdl_commmand_line(dateafter) + " " + url)
+        if exit_code != 0:
+            self.config.clean_exit = False
+            self.config.write()
+            sys.exit(exit_code)
+
+    def clean_tags(self):
+        temp_dir_path = self.config.temp_dir.name
+        for filename in os.listdir(temp_dir_path):
+            clean(temp_dir_path+"/" + filename, self.config)
+
+    def move_to_library(self):
+        temp_dir_path = self.config.temp_dir.name
+        for filename in os.listdir(temp_dir_path):
+            if filename.endswith(".mp3") and not filename.endswith(".temp.mp3"):
+                # this manage the metadata archive
+                if should_add(temp_dir_path+"/"+filename, self.config):
+                    # use ffmpeg to copy as it also solve a wrong song length problem
+                    os.system("mv " + "'"+temp_dir_path+"/" + filename + "'" +
+                              " " + "'" + self.config.library_path + "/" + filename+"'")
 
 
 def is_url(string):
-    youtube_channel_regex = "(https?: \/\/)?(www\.)?youtu((\.be) | (be\..{2, 5}))\/((user) | (channel))\/"
+    youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
     if re.match(youtube_channel_regex, string):
         return True
     else:
         answer = input("Warning:\n" + string + "\nThe provided url \
 does not look like a typical youtube channel \
 url, add it anyway? [Y/n]:")
-        if answer == "Y" or answer == "y" or answer == "Yes"\
-                or answer == "yes" or answer == "":
+        if answer == "Y" or answer == "y" or answer == "Yes" or answer == "yes" or answer == "":
             return True
     return False
 
@@ -37,14 +74,22 @@ def main():
 
     if command == "update":
         urls_to_update = a.args.get("update")
-        dateafter = 19600101
+        if not type(urls_to_update) is list:
+            urls_to_update = [urls_to_update]
+        dateafter = a.config.youtube_dl_args.get('dateafter')
         if not urls_to_update:  # list is empty
             urls_to_update = a.config.url_list
-            dateafter = a.config.date.youtube_dl_args.get('dateafter')
-        for url in urls_to_update:
-            a.update(urls_to_update, dateafter)
+        if a.args.get("include_old"):
+            dateafter = 19600101
+        if a.args.get("force"):
+            a.config.force = True
 
-        # TODO update date
+        for url in urls_to_update:
+            a.download_to_temp(url, dateafter)
+
+        a.clean_tags()
+        a.move_to_library()
+        a.config.youtube_dl_args["datefater"] = date.today().strftime("%Y%m%d")
 
     elif command == "add":
         for url in a.args.get("add"):
