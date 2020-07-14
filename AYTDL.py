@@ -1,12 +1,14 @@
 import sys
 import os
 import re
+import tempfile
+import shutil
 from pathlib import Path
+from datetime import date
 from autoytdl.config import Config
 from autoytdl.arguments import get_args
 from autoytdl.metadata_manager import should_add
 from autoytdl.name_cleaner import clean
-from datetime import date
 
 
 class AYTDL:
@@ -89,7 +91,7 @@ def main():
 
         a.clean_tags()
         a.move_to_library()
-        a.config.youtube_dl_args["datefater"] = date.today().strftime("%Y%m%d")
+        a.config.youtube_dl_args["dateafter"] = date.today().strftime("%Y%m%d")
 
     elif command == "add":
         for url in a.args.get("add"):
@@ -118,6 +120,12 @@ def main():
         os.system("xdg-open " + config_file_path)
     else:
         print("Invalid command")
+
+    # cleanup
+    shutil.rmtree(a.config.temp_dir.name)
+    a.config.clean_exit = True
+    a.config.force = False
+    a.config.write()
 
 
 if __name__ == "__main__":

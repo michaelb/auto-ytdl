@@ -18,9 +18,9 @@ class Config:
         if not os.path.exists(path_to_home+"/Musictest"):
             os.makedirs(path_to_home+"/Musictest")
 
-        config_directory = str(Path.home())+"/.config/auto-ytdl/"
+        self.config_directory = str(Path.home())+"/.config/auto-ytdl/"
         self.library_path = str(PurePath(Path.home(), "Musictest/"))
-        self.path_to_metadata = config_directory + "metadata_archive.txt"
+        self.path_to_metadata = self.config_directory + "metadata_archive.txt"
         self.temp_dir = temp_dir
         self.clean_exit = True
 
@@ -31,9 +31,9 @@ class Config:
         self.min_length = 60
         self.max_length = 600
         self.youtube_dl_args = {"ignore-errors": True,
-                                "max-downloads": 5,
+                                "max-downloads": 500,
                                 "quiet": False,
-                                "download-archive": config_directory + "archive.txt",
+                                "download-archive": self.config_directory + "archive.txt",
                                 "dateafter": "19600101",
                                 "metadata-from-title": "\"%(artist)s - %(title)s\"",
                                 "output": "\"" + self.temp_dir.name + "/%(title)s.%(ext)s\"",
@@ -43,11 +43,11 @@ class Config:
                                 "no-continue": True,
                                 "audio-quality": 0,
                                 "embed-thumbnail": False,
-                                "playlist-end": 3}
+                                "playlist-end": 150}
 
     def load(self):
         # check if config file already present, if so load it, else create it
-        config_file_path = str(Path.home())+"/.config/auto-ytdl/config.toml"
+        config_file_path = self.config_directory+"config.toml"
         if os.path.isfile(config_file_path):
             config_dict = toml.load(config_file_path)
             self.__dict__ = config_dict
@@ -57,8 +57,7 @@ class Config:
                 self.temp_dir.name + "/%(title)s.%(ext)s\""
             if not self.clean_exit:
                 # so evertyhing will be way slower next time but we will not miss any music
-                os.system("rm " + str(Path.home()) +
-                          "/.config/auto-ytdl/archive.txt")
+                os.system("rm " + self.config_directory+"archive.txt")
             self.write()
         else:
             self.write()
