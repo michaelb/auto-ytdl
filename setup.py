@@ -1,4 +1,4 @@
-from auto_ytdl.version import __version__
+from autoytdl.version import __version__
 try:
     from setuptools import setup, find_namespace_packages
 except ModuleNotFoundError as ex:
@@ -19,10 +19,10 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/michaelb/auto-ytdl",
     packages=find_namespace_packages(),
-    install_requires=['youtube-dl'],
+    install_requires=['youtube-dl', 'ffmpeg'],
     entry_points={
         'console_scripts': [
-            'aytdl = AYTDL:main'
+            'auto-ytdl = autoytdl.AYTDL:main'
         ]
     },
     include_package_data=True,

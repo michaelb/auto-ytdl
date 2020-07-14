@@ -2,6 +2,7 @@ from pathlib import Path, PurePath
 import tempfile
 import os
 import toml
+from datetime import date
 
 
 class Config:
@@ -34,7 +35,7 @@ class Config:
                                 "max-downloads": 500,
                                 "quiet": False,
                                 "download-archive": self.config_directory + "archive.txt",
-                                "dateafter": "19600101",
+                                "dateafter": date.today().strftime("%Y%m%d"),
                                 "metadata-from-title": "\"%(artist)s - %(title)s\"",
                                 "output": "\"" + self.temp_dir.name + "/%(title)s.%(ext)s\"",
                                 "add-metadata": True,

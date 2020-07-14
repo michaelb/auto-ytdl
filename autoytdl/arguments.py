@@ -9,7 +9,7 @@ def get_args():
 
     _description = 'A simple, configurable and automatic youtube-dl wrapper for\
     updating your local library.'
-    _usage = '%(prog)s [add | remove | list | update | edit] [URL ..] [OPTION ..]\nRun \"aytld COMMAND --help\" for more options'
+    _usage = '%(prog)s [add | remove | list | update | edit] [URL ..] [OPTION ..]\nRun \"aytld COMMAND --help\" for more information.'
     _conflict_handler = 'resolve'
 
     parser = argparse.ArgumentParser(
