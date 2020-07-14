@@ -5,6 +5,10 @@
 *.so
 *.dylib
 
+
+# because i suspect its fucks up the checksum
+PKGBUILD
+
 # Test binary, built with `go test -c`
 *.test
 
