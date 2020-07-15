@@ -1,6 +1,6 @@
-# auto-ytdl WIP
+# auto-ytdl
 
-[![WIP](https://img.shields.io/badge/WIP-v0.3.0-red.svg)]
+![WIP](https://img.shields.io/badge/WIP-v0.3.0-red.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -24,7 +24,7 @@ And that's it.
 
 # Why does it exist? / Motivation / Rant
 
-[DISCLAIMER: unformal language]
+[DISCLAIMER: informal language]
 
 Y'all know how we live in the 5G era, so for music folks that would mean streaming music 24/7... but (one or more of):
 
@@ -56,7 +56,7 @@ Moreover, it only offers a .deb package for "GNU/Linux OS" and .deb support for 
 
 see also [Usage](#usage) and [Examples](#examples)
 
-1. Add some of your favorite (youtube\*) channels / referencers /artist
+1. Add some of your favorite (youtube\*) channels / referencers /artists
 
 2. At your next update command, all newly-released music from specified sources will be downloaded, cleaned, de-duplicated, and added to your music library.
 

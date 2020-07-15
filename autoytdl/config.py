@@ -59,7 +59,8 @@ class Config:
             self.youtube_dl_args["output"] = "\"" + \
                 self.temp_dir.name + "/%(title)s.%(ext)s\""
             if not self.clean_exit:
-                # so evertyhing will be way slower next time but we will not miss any music
+                # so evertyhing will be way slower next time but
+                # we will not miss any music
                 os.system("rm -f " + self.config_directory+"archive.txt")
             self.write()
         else:
@@ -70,4 +71,52 @@ class Config:
         with open(config_file_path, "w+") as f:
             to_write = vars(self)
             f.write(toml.dumps(to_write))
-            f.write("#\n#You can add above your own --options for youtube-dl, without the double dash. \n#Write: 'option = true' for flags that do not take arguments, 'option = value' otherwise. \n#Don't forget to wrap string values in \"\" quotes")
+
+            f.write("#Delete this file to restore defaults\n\n\n")
+            f.write("\n\n  # A quick explanation for every useful,\n\
+                    # user-modifiable option:\n\n\
+                    # other options are not intended\n\
+                    # to be modified by the user\n\n\n\
+                     # -library_path : path to your music library.\n\
+                    # auto-ytdl will dump mp3 files there.\n\
+                    # -pre/post command: shell command to run\n\
+                            # before/after aytl commands. Can be\n\
+                            # useful for stopping your music player\n\
+                            # or telling it to rescan your library\n\
+                    # - denylist_names: an array of things you\n\
+                            # don't want in your music metadata.\n\
+                            # Matches also lowercase and plural, so\n\
+                            # adding \"Lyric\" will ensure that the\n\
+                            # video \"Rick Astley - Never Gonna Give \n\
+                            # You Up (lyrics)\" will be tagged\n\
+                            # \"Rick Astley\" and\n\
+                            # \"Never Gonna Give You Up\"\n\
+                    # -min/max length (seconds): will not add \n\
+                            # shorter/longer music to your library,\n\
+                            # unless --force is used\n\
+                    # - url_list: list of artist you've added.\n\
+                            # You should use add/remove and not\n\
+                            # modify this directly, but you can\n\
+                    # - youtube_dl_args: youtube-dl '--' args: \n\
+                            # You can add above your own --options\n\
+                            # for youtube-dl, without the\n\
+                            # double dash.\n\
+                            # Write: 'option = true' for flags \n\
+                            # that do not take arguments,\n\
+                            # 'option = value' otherwise. \n\
+                            # Don't forget to wrap string\n\
+                            # values in \"\" quotes\n\
+                            # \n\
+                            # max downloads: max downloads at once\n\
+                            # will abort if more downloads are\n\
+                            # attempted as this will understood as\n\
+                            # a potentially disastrous user error \n\
+                            # should so much (maybe unintended)\n\
+                            # titles be added to the user's library\n\
+                            # \n\
+                            # playlist-end : 150 means that you \n\
+                            # will not download more that 150\n\
+                            # titles of one source. You can modify\n\
+                            # it to any arbitraty high integer,\n\
+                            # but your the pre-download step\n\
+                            # will be much slower\n")

@@ -3,6 +3,7 @@ import os
 import re
 import tempfile
 import shutil
+import subprocess
 from pathlib import Path
 from datetime import date
 from autoytdl.config import Config
@@ -92,6 +93,13 @@ def main():
             dateafter = 19600101
         if a.args.get("force"):
             a.config.force = True
+
+        if a.args.get("playing"):
+            urls_to_update = []
+            current = subprocess.check_output(
+                "strings ~/'.config/google-chrome/Default/Current Session' | 'grep' -E '^https?://www.youtube'  | tail -1", shell=True)
+            if current != b'' and current != '':
+                urls_to_update = [str(current)[2:-2]]
 
         for url in urls_to_update:
             print("[downloading] " + url)

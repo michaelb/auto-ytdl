@@ -53,6 +53,9 @@ def get_args():
     update_parser.add_argument("--force", action='store_true',
                                help="force download of (preferably one) url,\
                                        even if does not look like music")
+    update_parser.add_argument("-p", "--playing", action='store_true',
+                               help="download the video currently playing\
+                                        on your browser (chrome/youtube only)")
 
     parser.add_argument('--version', action='version',
                         version='%(prog)s {0}'.format(__version__))

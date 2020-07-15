@@ -19,7 +19,8 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/michaelb/auto-ytdl",
     packages=find_namespace_packages(),
-    install_requires=['youtube-dl', 'ffmpeg'],
+    install_requires=['youtube-dl', 'ffmpeg', 'mp3_tagger',
+                      'toml', 'pathlib', 'argparse', 'toml', 'mutagen'],
     entry_points={
         'console_scripts': [
             'aytdl = autoytdl.AYTDL:main'
