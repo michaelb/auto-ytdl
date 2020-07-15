@@ -1,6 +1,6 @@
 # auto-ytdl WIP
 
-[![WIP](https://img.shields.io/badge/auto-ytdl-v0.3.0-red.svg)]
+[![WIP](https://img.shields.io/badge/WIP-v0.3.0-red.svg)]
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
