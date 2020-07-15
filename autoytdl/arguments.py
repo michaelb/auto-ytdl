@@ -47,10 +47,10 @@ def get_args():
                                help="download all new music from every added channels,\
                 or all new music from the specified channel")
 
-    update_parser.add_argument("--include-old", action='store_true',
+    update_parser.add_argument("-i", "--include-old", action='store_true',
                                help="download old videos, else only music posted\
                                 after the current date will be download")
-    update_parser.add_argument("--force", action='store_true',
+    update_parser.add_argument("-f", "--force", action='store_true',
                                help="force download of (preferably one) url,\
                                        even if does not look like music")
     update_parser.add_argument("-p", "--playing", action='store_true',

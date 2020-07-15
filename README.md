@@ -71,13 +71,16 @@ see also [Usage](#usage) and [Examples](#examples)
 - Clean and filter by tags so only 'true' and unique songs (according to config) end up in your library
 - Can still handle one-shot downloads, or include older songs of (newly discovered) artists
 - Comprehensive config
-- WIP
+- resume interrupted downloads
+- download song currently playing in chrome/youtube
 
 # Dependencies
 
 - youtube-dl
 - ffmpeg
 - python3-pip (for manual install)
+
+XDG-compliant desktop environment
 
 # Install
 

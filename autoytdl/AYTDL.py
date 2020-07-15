@@ -82,6 +82,7 @@ def main():
 
     command = a.args.get("COMMANDS")
 
+    # UPDATE COMMAND
     if command == "update":
         urls_to_update = a.args.get("update")
         if not type(urls_to_update) is list:
@@ -109,6 +110,7 @@ def main():
         a.move_to_library()
         a.config.youtube_dl_args["dateafter"] = date.today().strftime("%Y%m%d")
 
+    # ADD COMMAND
     elif command == "add":
         for url in a.args.get("add"):
             if is_url(url) and url not in a.config.url_list:
@@ -118,6 +120,7 @@ def main():
                 print("[not added] "+url)
         a.config.write()
 
+    # REMOVE COMMAND
     elif command == "remove":
         for url in a.args.get("remove"):
             if url in a.config.url_list:
@@ -127,10 +130,12 @@ def main():
                 print("[not found] " + url)
         a.config.write()
 
+    # LIST COMMAND
     elif command == "list":
         for url in a.config.url_list:
             print(url)
 
+    # EDIT COMMAND
     elif command == "edit":
         config_file_path = str(Path.home())+"/.config/auto-ytdl/config.toml"
         os.system("xdg-open " + config_file_path)

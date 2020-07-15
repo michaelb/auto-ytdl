@@ -16,19 +16,19 @@ class Config:
         if not os.path.exists(path_to_home+"/.config/auto-ytdl"):
             os.makedirs(path_to_home+"/.config/auto-ytdl")
         # cahne from musictest to real Music folder
-        if not os.path.exists(path_to_home+"/Musictest"):
-            os.makedirs(path_to_home+"/Musictest")
+        if not os.path.exists(path_to_home+"/Music"):
+            os.makedirs(path_to_home+"/Music")
 
         self.config_directory = str(Path.home())+"/.config/auto-ytdl/"
-        self.library_path = str(PurePath(Path.home(), "Musictest/"))
+        self.library_path = str(PurePath(Path.home(), "Music/"))
         self.path_to_metadata = self.config_directory + "metadata_archive.txt"
         self.temp_dir = temp_dir
         self.clean_exit = True
         self.pre_command = ""
         self.post_command = ""
 
-        self.denylist_names = ["Proximity", "Diversity", "Release", "Music", "Lyric",
-                               "Radio", "Recording", "Premiere", "Audio", "Exclusive"]
+        self.denylist_names = ["Release", "Music", "Lyric", "Radio",
+                               "Recording", "Premiere", "Audio", "Exclusive", "Video"]
         self.url_list = []
         self.force = False
         self.min_length = 60
