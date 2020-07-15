@@ -60,7 +60,7 @@ class Config:
                 self.temp_dir.name + "/%(title)s.%(ext)s\""
             if not self.clean_exit:
                 # so evertyhing will be way slower next time but we will not miss any music
-                os.system("rm " + self.config_directory+"archive.txt")
+                os.system("rm -f " + self.config_directory+"archive.txt")
             self.write()
         else:
             self.write()

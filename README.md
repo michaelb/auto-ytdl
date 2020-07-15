@@ -1,6 +1,15 @@
 # auto-ytdl WIP
 
+[![WIP](https://img.shields.io/badge/auto-ytdl-v0.3.0-red.svg)]
+
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
+
+```
+aytdl update
+```
+
+And that's it.
+(Some initial setup is required of course, so auto-ytdl knows what music to download, but the most used commands are that simple)
 
 # Table of Contents
 
@@ -37,15 +46,21 @@ Plus, auto-ytdl comes with management of duplicates of newly-downloaded songs, b
 
 No.
 
+[deserves mention for existing]
+
 The closest I could find is MediaHuman (paid, expensive, closed-source) Youtube-Downloader: as of writing, it seems to have 'tracking' capabilities, and little explications given.
 All this looked a bit fishy, it has a nice GUI though.
 Moreover, it only offers a .deb package for "GNU/Linux OS" and .deb support for Arch (btw I use Arch) is not first-class.
 
 # How does it works?
 
-Add some of your favorite (youtube\*) channels / referencers /artist
+see also [Usage](#usage) and [Examples](#examples)
 
-At your next update command, all newly-released music from specified sources will be downloaded, cleaned, de-duplicated, and added to your music library.
+1. Add some of your favorite (youtube\*) channels / referencers /artist
+
+2. At your next update command, all newly-released music from specified sources will be downloaded, cleaned, de-duplicated, and added to your music library.
+
+3. [optionnal] Tinker with the options
 
 \* playlist or channels from Dailymotion, vimeo or anything youtube-dl can download from can in theory work, but have not been tested yet
 
@@ -62,7 +77,7 @@ At your next update command, all newly-released music from specified sources wil
 
 - youtube-dl
 - ffmpeg
-- python3-pip
+- python3-pip (for manual install)
 
 # Install
 
