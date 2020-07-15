@@ -28,7 +28,8 @@ class Config:
         self.post_command = ""
 
         self.denylist_names = ["Release", "Music", "Lyric", "Radio",
-                               "Recording", "Premiere", "Audio", "Exclusive", "Video"]
+                               "Recording", "Premiere", "Audio",
+                               "Exclusive", "Video", "Official"]
         self.url_list = []
         self.force = False
         self.min_length = 60

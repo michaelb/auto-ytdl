@@ -76,6 +76,7 @@ def main():
 
     # pre-command
     if a.config.pre_command != "":
+        print("[running pre_command] " + a.config.pre_command)
         exit_code = os.system(a.config.pre_command)
         if exit_code != 0:
             sys.exit(exit_code)
@@ -90,7 +91,10 @@ def main():
         dateafter = a.config.youtube_dl_args.get('dateafter')
         if not urls_to_update:  # list is empty
             urls_to_update = a.config.url_list
-        if a.args.get("include_old"):
+
+        # --playing should always download even if old,
+        # thus it implies include-old
+        if a.args.get("include_old") or a.args.get("playing"):
             dateafter = 19600101
         if a.args.get("force"):
             a.config.force = True
@@ -144,12 +148,15 @@ def main():
 
     # cleanup
     shutil.rmtree(a.config.temp_dir.name)
+    a.config.temp_dir = ""
     a.config.clean_exit = True
     a.config.force = False
     a.config.write()
 
     # post-command
     if a.config.post_command != "":
+
+        print("[running post_command] " + a.config.post_command)
         exit_code = os.system(a.config.post_command)
         if exit_code != 0:
             sys.exit(exit_code)
