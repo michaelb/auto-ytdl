@@ -72,6 +72,13 @@ url, add it anyway? [Y/n]:")
 
 def main():
     a = AYTDL()
+
+    # pre-command
+    if a.config.pre_command != "":
+        exit_code = os.system(a.config.pre_command)
+        if exit_code != 0:
+            sys.exit(exit_code)
+
     command = a.args.get("COMMANDS")
 
     if command == "update":
@@ -87,6 +94,7 @@ def main():
             a.config.force = True
 
         for url in urls_to_update:
+            print("[downloading] " + url)
             a.download_to_temp(url, dateafter)
 
         a.clean_tags()
@@ -126,6 +134,12 @@ def main():
     a.config.clean_exit = True
     a.config.force = False
     a.config.write()
+
+    # post-command
+    if a.config.post_command != "":
+        exit_code = os.system(a.config.post_command)
+        if exit_code != 0:
+            sys.exit(exit_code)
 
 
 if __name__ == "__main__":

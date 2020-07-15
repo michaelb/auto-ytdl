@@ -24,6 +24,8 @@ class Config:
         self.path_to_metadata = self.config_directory + "metadata_archive.txt"
         self.temp_dir = temp_dir
         self.clean_exit = True
+        self.pre_command = ""
+        self.post_command = ""
 
         self.denylist_names = ["Proximity", "Diversity", "Release", "Music", "Lyric",
                                "Radio", "Recording", "Premiere", "Audio", "Exclusive"]
