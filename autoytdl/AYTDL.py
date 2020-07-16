@@ -66,6 +66,7 @@ class AYTDL:
                 # this manage the metadata archive
                 if should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
+                    print("[moving to library] " + filename)
                     os.system("mv " + "\""+temp_dir_path+"/" + filename + "\"" +
                               " " + "\"" + self.config.library_path + "/" + filename+"\"")
 

@@ -106,7 +106,7 @@ def should_add(mp3_file, config):
         print("[already present in metadata archive, skipping]", tuple_mp3)
         return False
     else:
-        print("[adding to metadata archive]", tuple_mp3)
         if not inlist(tuple_mp3, list_tags):
+            print("[adding to metadata archive]", tuple_mp3)
             append_to_file(tuple_mp3, config.path_to_metadata)
         return True
