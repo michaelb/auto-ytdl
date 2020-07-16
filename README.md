@@ -68,7 +68,7 @@ see also [Usage](#usage) and [Examples](#examples)
 
 - Auto-download of all new music from a simple command
 - Add/remove/list all your favorite music providers (not tested on anything other than youtube channels)
-- Clean tags, so the displayed artist name does _not_ look like "Nirvana (lyrics) [music video] official"
+- Clean tags, so the displayed artist name does _not_ look like "Nirvana (lyrics) [music video] official" but just "Nirvana"
 - Filter by tags so only 'true' and unique songs (according to config) end up in your library
 - Can still handle one-shot downloads, or include older songs of (newly discovered) artists
 - Comprehensive config options
