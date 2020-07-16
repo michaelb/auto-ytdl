@@ -23,7 +23,7 @@ class AYTDL:
         def prepare_ytdl_commmand_line(dateafter):
             line = ""
             for key, value in self.config.youtube_dl_args.items():
-                if key == "datefater":
+                if key == "datefater" or key == "download-archive":
                     continue
                 line += " "
                 if value is True:
@@ -34,13 +34,27 @@ class AYTDL:
                     line += "--" + key + " " + str(value)
             # special case because it is updated or not for
             line += " --dateafter " + str(dateafter)
+            # special case 2 to ignore archive
+            if not self.config.force:
+                line += " --download-archive " + \
+                    self.config.youtube_dl_args["download-archive"] + " "
+
             return line
+
+        # here
         exit_code = os.system("youtube-dl " +
                               prepare_ytdl_commmand_line(dateafter) + " " + url)
-        if exit_code != 0:
+        if exit_code == 130 or exit_code == 256:  # interrupted by user, or unspecified
             self.config.clean_exit = False
             self.config.write()
             sys.exit(exit_code)
+        if exit_code != 0:
+            ask = input("Error code: " + exit_code +
+                        "\n youtube-dl encountered at least one error, continue? (Y/n): ")
+            if ask == "N" or ask == "n" or ask == "No" or ask == "no":
+                self.config.clean_exit = False
+                self.config.write()
+                sys.exit(exit_code)
 
     def clean_tags(self):
         temp_dir_path = self.config.temp_dir.name
@@ -54,8 +68,8 @@ class AYTDL:
                 # this manage the metadata archive
                 if should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
-                    os.system("mv " + "'"+temp_dir_path+"/" + filename + "'" +
-                              " " + "'" + self.config.library_path + "/" + filename+"'")
+                    os.system("mv " + "\""+temp_dir_path+"/" + filename + "\"" +
+                              " " + "\"" + self.config.library_path + "/" + filename+"\"")
 
 
 def is_url(string):
@@ -96,8 +110,10 @@ def main():
         # thus it implies include-old
         if a.args.get("include_old") or a.args.get("playing"):
             dateafter = 19600101
+        # force is a real FORCE and thus implies include-old
         if a.args.get("force"):
             a.config.force = True
+            dateafter = 19600101
 
         if a.args.get("playing"):
             urls_to_update = []
