@@ -44,11 +44,7 @@ class AYTDL:
         # here
         exit_code = os.system("youtube-dl " +
                               prepare_ytdl_commmand_line(dateafter) + " " + url)
-        if exit_code == 130 or exit_code == 256:  # interrupted by user, or unspecified
-            self.config.clean_exit = False
-            self.config.write()
-            sys.exit(exit_code)
-        if exit_code != 0:
+        if exit_code != 0:  # may be a youtube-dl error taht is recoverable
             ask = input("Error code: " + exit_code +
                         "\n youtube-dl encountered at least one error, continue? (Y/n): ")
             if ask == "N" or ask == "n" or ask == "No" or ask == "no":
