@@ -86,6 +86,8 @@ url, add it anyway? [Y/n]:")
 
 def main():
     a = AYTDL()
+    a.config.clean_exit = False  # will be reset to true at the programm end
+    a.config.write()  # so in case of premature exit, clean_exit is false
 
     # pre-command
     if a.config.pre_command != "":
