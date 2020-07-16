@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![WIP](https://img.shields.io/badge/WIP-v0.3.0-red.svg)
+![](https://img.shields.io/badge/Release-v1.0.0-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -68,11 +68,12 @@ see also [Usage](#usage) and [Examples](#examples)
 
 - Auto-download of all new music from a simple command
 - Add/remove/list all your favorite music providers (not tested on anything other than youtube channels)
-- Clean and filter by tags so only 'true' and unique songs (according to config) end up in your library
+- Clean tags, so the displayed artist name does _not_ look like "Nirvana (lyrics) [music video] official"
+- Filter by tags so only 'true' and unique songs (according to config) end up in your library
 - Can still handle one-shot downloads, or include older songs of (newly discovered) artists
-- Comprehensive config
-- resume interrupted downloads
-- download song currently playing in chrome/youtube
+- Comprehensive config options
+- No missing/skipping songs, even if a previous download was interrupted
+- Download song currently playing in chrome/youtube
 
 # Dependencies
 
@@ -80,7 +81,7 @@ see also [Usage](#usage) and [Examples](#examples)
 - ffmpeg
 - python3-pip (for manual install)
 
-XDG-compliant desktop environment
+For every feature to work, you need a XDG-compliant desktop environment
 
 # Install
 
