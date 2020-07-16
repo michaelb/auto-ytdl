@@ -86,7 +86,7 @@ For every feature to work, you need a XDG-compliant desktop environment
 # Install
 
 - auto-ytdl will be available in the AUR
-  [link placeholder]
+  ![](https://aur.archlinux.org/packages/auto-ytdl-git/)
 - install from source:
 
 ```
