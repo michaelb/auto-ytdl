@@ -45,8 +45,10 @@ class AYTDL:
         exit_code = os.system("youtube-dl " +
                               prepare_ytdl_commmand_line(dateafter) + " " + url)
         if exit_code != 0:  # may be a youtube-dl error taht is recoverable
-            ask = input("Error code: " + exit_code +
-                        "\n youtube-dl encountered at least one error, continue? (Y/n): ")
+            ask = "Y"
+            if not self.config.force:
+                ask = input("Error code: " + str(exit_code) +
+                            "\nyoutube-dl encountered at least one error.\nThat can happen when a video you are trying to download is not-standart (geo-restricted, not released yet, 'première').\nContinue anyway (recommended: yes) ? (Y/n): ")
             if ask == "N" or ask == "n" or ask == "No" or ask == "no":
                 self.config.clean_exit = False
                 self.config.write()
