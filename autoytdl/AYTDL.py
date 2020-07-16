@@ -37,10 +37,16 @@ class AYTDL:
             return line
         exit_code = os.system("youtube-dl " +
                               prepare_ytdl_commmand_line(dateafter) + " " + url)
-        if exit_code != 0:
+        if exit_code == 130:
             self.config.clean_exit = False
             self.config.write()
             sys.exit(exit_code)
+        if exit_code != 0:
+            self.config.clean_exit = False
+            self.config.write()
+            ask = input("Something went wrong, continue? (Y/n): ")
+            if ask == "N" or ask == "n" or ask == "No" or ask == "no":
+                sys.exit(exit_code)
 
     def clean_tags(self):
         temp_dir_path = self.config.temp_dir.name
