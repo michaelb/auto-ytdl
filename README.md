@@ -46,8 +46,10 @@ Plus, auto-ytdl comes with management of duplicates of newly-downloaded songs, b
 
 No.
 
-[deserves mention for existing]
+However, (https://github.com/keshavbhatt/olivia) is a music player that propose a similar feature named 'smart playlist', the beta I tested could auto-download individual songs. You may want to check it out!
+ It's more of an all-rounder and I believe auto-ytdl + your favorite music player may be a better combo *if your use case is similar to mine* 
 
+[deserves mention for existing]
 The closest I could find is MediaHuman (paid, expensive, closed-source) Youtube-Downloader: as of writing, it seems to have 'tracking' capabilities, and little explications given.
 All this looked a bit fishy, it has a nice GUI though.
 Moreover, it only offers a .deb package for "GNU/Linux OS" and .deb support for Arch (btw I use Arch) is not first-class.
