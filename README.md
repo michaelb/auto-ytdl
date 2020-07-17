@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![](https://img.shields.io/badge/Release-v1.0.0-green.svg)
+![](https://img.shields.io/badge/Release-v1.0.3-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -94,6 +94,9 @@ For every feature to work, you need a XDG-compliant desktop environment
 git clone https://github.com/michaelb/auto-ytdl
 cd auto-ytdl
 pip install --user .
+
+# to uninstall if installed manually
+pip uninstall auto-ytdl
 ```
 
 # Usage
