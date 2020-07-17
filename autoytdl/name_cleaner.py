@@ -10,6 +10,10 @@ from mp3_tagger import MP3File, VERSION_2
 
 def remove_brackets(string):
     string = re.sub(r'\(\)', '', string)
+    string = re.sub(r'\( \)', '', string)
+    string = re.sub(r'\(  \)', '', string)
+    # dont want to test more compelx regex for this
+    string = re.sub(r'\(   \)', '', string)
     string = re.sub("[\{\[].*?[\}\]]", "", string)
     return string
 

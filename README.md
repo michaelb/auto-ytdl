@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![](https://img.shields.io/badge/Release-v1.0.0-green.svg)
+![](https://img.shields.io/badge/Release-v1.0.3-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -26,7 +26,7 @@ And that's it.
 
 [DISCLAIMER: informal language]
 
-Y'all know how we live in the 5G era, so for music folks that would mean streaming music 24/7... but (one or more of):
+Y'all know how we live in the 5G era, so for us music folks that would mean streaming music 24/7... but (one or more of):
 
 - there is no mobile network / wifi at your office / parent's home / hotel room / on the road / at the back of your house
 - you have a limited data allowance anyway
@@ -66,14 +66,15 @@ see also [Usage](#usage) and [Examples](#examples)
 
 # Features
 
-- Auto-download of all new music from a simple command
+- Auto-download of all new music from a simple command (video is auto-converted to mp3)
 - Add/remove/list all your favorite music providers (not tested on anything other than youtube channels)
-- Clean tags, so the displayed artist name does _not_ look like "Nirvana (lyrics) [music video] official" but just "Nirvana"
+- Clean tags, so e.g. the displayed artist name does _not_ look like "Nirvana (lyrics) [Music video] official" but just "Nirvana"
 - Filter by tags so only 'true' and unique songs (according to config) end up in your library
+- Ignore the filter if you really want that weird video
 - Can still handle one-shot downloads, or include older songs of (newly discovered) artists
 - Comprehensive config options
-- No missing/skipping songs, even if a previous download was interrupted
-- Download song currently playing in chrome/youtube
+- No missing/skipping/forgetting songs, even if a previous download was interrupted
+- Download video currently playing in chrome/youtube (link that one to a shortcut)
 
 # Dependencies
 
@@ -93,6 +94,9 @@ For every feature to work, you need a XDG-compliant desktop environment
 git clone https://github.com/michaelb/auto-ytdl
 cd auto-ytdl
 pip install --user .
+
+# to uninstall if installed manually
+pip uninstall auto-ytdl
 ```
 
 # Usage
@@ -111,6 +115,10 @@ aytdl --help
 
 #asking for help about 'update' command
 aytdl update --help
+
+
+#edit the config file (you should do that, rather sooner than later)
+aytdl edit
 
 #add Mr SuicideSheep to followed channels
 aytdl add https://www.youtube.com/channel/UC5nc_ZtjKW1htCVZVRxlQAQ
@@ -138,6 +146,4 @@ aytdl update --include-old https://www.youtube.com/channel/UC5nc_ZtjKW1htCVZVRxl
 # download a 1-hour concerto (not fitting the (configurable) criteria for 'normal' music)
 aytdl update https://www.youtube.com/watch?v=PM0HqmptYlY --force
 
-#edit the config file
-aytdl edit
 ```
