@@ -14,12 +14,12 @@ setup(
     version=__version__,
     author="michaelb",
     author_email="michael.bleuez22@gmail.com",
-    description="A simple, configurable youtube-dl wrapper to download and manage youtube auto download, package-manager style",
+    description="A simple, configurable youtube-dl wrapper to download and manage youtube audio auto download, package-manager style",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/michaelb/auto-ytdl",
     packages=find_namespace_packages(),
-    install_requires=['youtube-dl', 'ffmpeg', 'mp3_tagger',
+    install_requires=['youtube-dl', 'ffmpeg',
                       'toml', 'pathlib', 'argparse', 'toml', 'mutagen'],
     entry_points={
         'console_scripts': [

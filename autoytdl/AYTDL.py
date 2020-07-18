@@ -15,7 +15,16 @@ from autoytdl.name_cleaner import clean
 class AYTDL:
     def __init__(self):
         self.config = Config()
-        self.config.load()
+        try:
+            self.config.load()
+        except Exception as inst:
+            if str(inst) == "Major version change":
+                print("\033[91mWarning: " + str(inst) + "\033[0m")
+                print("A major version has been changed, and your configuration  was changed:\n - options were added\n - some may have been reset.\n\nYour old configuration file has been saved at " +
+                      self.config.config_directory + "config.toml.backup\n\nI recommend to have a quick look at the new configuration to check if everything is alright.\nYou can do so via \"aytdl edit\"")
+            self.config.reset_soft()
+
+            sys.exit(0)
 
         self.args = get_args()
 
@@ -60,9 +69,15 @@ class AYTDL:
             clean(temp_dir_path+"/" + filename, self.config)
 
     def move_to_library(self):
+        def ok(filename):
+            for ext in self.config.valid_extensions:
+                if filename.endswith(ext):
+                    return True
+            return False
+
         temp_dir_path = self.config.temp_dir.name
         for filename in os.listdir(temp_dir_path):
-            if filename.endswith(".mp3") and not filename.endswith(".temp.mp3"):
+            if ok(filename) and not filename.endswith(".temp.mp3"):
                 # this manage the metadata archive
                 if should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
@@ -105,6 +120,10 @@ def main():
             urls_to_update = [urls_to_update]
         dateafter = a.config.youtube_dl_args.get('dateafter')
         if not urls_to_update:  # list is empty
+            # check if date is today so to not lose time
+            if a.config.youtube_dl_args["dateafter"] == date.today().strftime("%Y%m%d"):
+                print("Already up to date, nothing to do")
+                return 0
             urls_to_update = a.config.url_list
 
         # --playing should always download even if old,
