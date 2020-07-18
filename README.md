@@ -22,7 +22,7 @@ And that's it.
 - [Usage](#usage)
 - [Examples](#examples)
 
-# Why does it exist? / Motivation / Rant
+# Why does it exist? / Motivation / Rant / you can skip this part
 
 [DISCLAIMER: informal language]
 
@@ -42,7 +42,7 @@ For people who truly enjoy music \*, nothing beats yet having a local library, e
 Auto-ytdl is there to help (you) with all that: there are tons of great artists that publish new songs everyday; having a local music library should not mean that we have to forsake listening to those!
 Plus, auto-ytdl comes with management of duplicates of newly-downloaded songs, based on metadata so you don't have multiples identical song but from different youtube channels.
 
-\*  (*yes* I know youtube and other video streaming services do not have extremely good audio, but it's out of convenience): hardocre audiophile abstain
+\*  (*yes* I know youtube and other video streaming services do not have extremely good audio, but it's out of convenience): hardcore audiophile abstain
 # Doesn't it exist already?
 
 No.
