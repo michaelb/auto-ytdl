@@ -93,6 +93,7 @@ class Config:
                 os.system("rm -f " + self.config_directory+"archive.txt")
             self.write()
         else:
+            print("Hey! It looks like it's the first time you used auto-ytdl.\nYou may want to see the help menu and edit the configuration to suit your needs")
             self.write()
 
     def write(self, path=str(Path.home())+"/.config/auto-ytdl/config.toml"):

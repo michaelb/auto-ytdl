@@ -42,16 +42,15 @@ For people who truly enjoy music \*, nothing beats yet having a local library, e
 Auto-ytdl is there to help (you) with all that: there are tons of great artists that publish new songs everyday; having a local music library should not mean that we have to forsake listening to those!
 Plus, auto-ytdl comes with management of duplicates of newly-downloaded songs, based on metadata so you don't have multiples identical song but from different youtube channels.
 
-\*  (*yes* I know youtube and other video streaming services do not have extremely good audio, but it's out of convenience): hardcore audiophile abstain
+\* (_yes_ I know youtube and other video streaming services do not have extremely good audio, but it's out of convenience): hardcore audiophile abstain
+
 # Doesn't it exist already?
 
 No.
 
 However, (https://github.com/keshavbhatt/olivia) is a music player that propose a similar feature named 'smart playlist', the beta I tested could auto-download individual songs. You may want to check it out!
 
- It's more of an all-rounder and I believe auto-ytdl + your favorite music player may be a better combo *if your use case is similar to mine* 
-
-
+It's more of an all-rounder and I believe auto-ytdl + your favorite music player may be a better combo _if your use case is similar to mine_
 
 [deserves mention for existing]
 The closest I could find is MediaHuman (paid, expensive, closed-source) Youtube-Downloader: as of writing, it seems to have 'tracking' capabilities, and little explications given.
@@ -73,7 +72,7 @@ see also [Usage](#usage) and [Examples](#examples)
 # Features
 
 - Auto-download of all new music from a simple command (music-only download, best quality available, no conversion by default)
-- Add/remove/list all your favorite music providers (not tested on anything other than youtube channels)
+- Add/remove/list all your favorite music providers; mainly tested on youtube channels, but should work on playlist, and other video platforms
 - Clean tags, so e.g. the displayed artist name does _not_ look like "Nirvana (lyrics) [Music video] official" but just "Nirvana"
 - Filter by tags so only 'true' and unique songs (according to config) end up in your library
 - Ignore the filter if you really want that weird video
