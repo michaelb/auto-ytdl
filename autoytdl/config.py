@@ -48,10 +48,8 @@ class Config:
                                 "add-metadata": True,
                                 "force-ipv4": True,
                                 "extract-audio": True,
-                                "audio-format": False,
                                 "no-continue": True,
                                 "audio-quality": 0,
-                                "embed-thumbnail": False,
                                 "write-thumbnail": True,
                                 "playlist-end": 150}
 
