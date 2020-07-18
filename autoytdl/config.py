@@ -52,6 +52,7 @@ class Config:
                                 "no-continue": True,
                                 "audio-quality": 0,
                                 "embed-thumbnail": False,
+                                "write-thumbnail": True,
                                 "playlist-end": 150}
 
     def reset_soft(self):

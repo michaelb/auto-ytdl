@@ -66,7 +66,7 @@ see also [Usage](#usage) and [Examples](#examples)
 
 # Features
 
-- Auto-download of all new music from a simple command (video is auto-converted to mp3)
+- Auto-download of all new music from a simple command (music-only download, best quality available, no conversion by default)
 - Add/remove/list all your favorite music providers (not tested on anything other than youtube channels)
 - Clean tags, so e.g. the displayed artist name does _not_ look like "Nirvana (lyrics) [Music video] official" but just "Nirvana"
 - Filter by tags so only 'true' and unique songs (according to config) end up in your library
