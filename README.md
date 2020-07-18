@@ -22,11 +22,11 @@ And that's it.
 - [Usage](#usage)
 - [Examples](#examples)
 
-# Why does it exist? / Motivation / Rant
+# Why does it exist? / Motivation / Rant / you can skip this part
 
 [DISCLAIMER: informal language]
 
-Y'all know how we live in the 5G era, so for us music folks that would mean streaming music 24/7... but (one or more of):
+Y'all know how we live in the 5G era, so for us music \* folks that would mean streaming music 24/7... but (one or more of):
 
 - there is no mobile network / wifi at your office / parent's home / hotel room / on the road / at the back of your house
 - you have a limited data allowance anyway
@@ -37,17 +37,23 @@ Y'all know how we live in the 5G era, so for us music folks that would mean stre
 
 [DISCLAIMER: personal opinion]
 
-For people who truly enjoy music, nothing beats yet having a local library, even with the hassle of managing, de-duplicating, and updating it constantly.
+For people who truly enjoy music \*, nothing beats yet having a local library, even with the hassle of managing, de-duplicating, and updating it constantly.
 
 Auto-ytdl is there to help (you) with all that: there are tons of great artists that publish new songs everyday; having a local music library should not mean that we have to forsake listening to those!
 Plus, auto-ytdl comes with management of duplicates of newly-downloaded songs, based on metadata so you don't have multiples identical song but from different youtube channels.
 
+\*  (*yes* I know youtube and other video streaming services do not have extremely good audio, but it's out of convenience): hardcore audiophile abstain
 # Doesn't it exist already?
 
 No.
 
-[deserves mention for existing]
+However, (https://github.com/keshavbhatt/olivia) is a music player that propose a similar feature named 'smart playlist', the beta I tested could auto-download individual songs. You may want to check it out!
 
+ It's more of an all-rounder and I believe auto-ytdl + your favorite music player may be a better combo *if your use case is similar to mine* 
+
+
+
+[deserves mention for existing]
 The closest I could find is MediaHuman (paid, expensive, closed-source) Youtube-Downloader: as of writing, it seems to have 'tracking' capabilities, and little explications given.
 All this looked a bit fishy, it has a nice GUI though.
 Moreover, it only offers a .deb package for "GNU/Linux OS" and .deb support for Arch (btw I use Arch) is not first-class.
