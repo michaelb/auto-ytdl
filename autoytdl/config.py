@@ -20,24 +20,79 @@ class Config:
         if not os.path.exists(path_to_home+"/Music"):
             os.makedirs(path_to_home+"/Music")
 
+        # ORDER OF COMMENTS AND OPTIONS IS PARAMOUNT TO CORRECT COMMENTS IN CONFIG FILE
+
+        self.comments = ["Software version"]
         self.version = __version__
+
+        self.comments += ["Path to the config directory"]
         self.config_directory = str(Path.home())+"/.config/auto-ytdl/"
+
+        self.comments += ["Path to the user's music library"]
         self.library_path = str(PurePath(Path.home(), "Music/"))
+
+        self.comments += ["Path to the metadata archive"]
         self.path_to_metadata = self.config_directory + "metadata_archive.txt"
+
+        self.comments += ["Not user modifiable. Directory to store temporary files"]
         self.temp_dir = temp_dir
+
+        self.comments += ["Whether the last program exit was 'clean' or aborted; the next program run will be much longer if false"]
         self.clean_exit = True
+
+        self.comments += ["Command to run before auto-ytdl starts"]
         self.pre_command = ""
+
+        self.comments += [
+            "Command to run after auto-ytdl exit (refreshing/rescanning library of your music player?)"]
         self.post_command = ""
+
+        self.comments += [
+            "Extensions supported by your music player, add or remove any you think is rigth"]
         self.valid_extensions = [".mp3", ".ogg",
                                  ".opus", ".flac", ".aac", ".m4a"]
 
+        self.comments += [
+            "Words you do NOT want in song's metadata. So a video named \"Queen - Bohemian Rhapsody (Official video) (lyrics)\" becomes a music tagged \"Queen\" and \"Bohemian Rhapsody\" "]
         self.denylist_names = ["Release", "Music", "Lyric", "Radio",
                                "Recording", "Premiere", "Audio",
-                               "Exclusive", "Video", "Official"]
+                               "Exclusive", "Video", "Official", "High Definition"]
+
+        self.comments += [
+            "urls of added channels/playlists. Please use the add/remove/list interface to modify"]
         self.url_list = []
+
+        self.comments += ["Not user modifiable"]
         self.force = False
+
+        self.comments += [
+            "Minimum length (in seconds) a music must have to be moved into the user's library (discarded otherwise)"]
         self.min_length = 60
+
+        self.comments += [
+            "Maximum length (in seconds) a music must have to be moved into the user's library (discarded otherwise)"]
         self.max_length = 600
+
+        # youtube-dl args section
+        self.comments += [""]  # padding
+        self.comments += [
+            "youtube-dl arguments: double-dash \"--\" arguments may be appended at the END of the config file:\n#write: \"option name without --\" = true/false/value\n#-> true to activate a flag\n#-> false to make it not appear in the command\n#-> value (or \"value\" for string values) to set the option argument"]
+        self.comments += ["Don't stop downloading if one of many downloads had an error"]
+        self.comments += [
+            "Never download more than this much at once (prevent mistakes)"]
+        self.comments += ["No ouptput from youtube-dl"]
+        self.comments += ["Not user modifiable"]
+        self.comments += ["Date (yyyymmdd) of last download, can be user modified, but not on a regular basis. Changing this will make auto-ytdl think you don't have updated since %dateafter"]
+        self.comments += ["Should really not be modified, as most of the video naming follow this convention, unless you know what you are doing"]
+        self.comments += ["Temp directory, not user-modifiable"]
+        self.comments += ["Don't set to false unless you don't want title/artist metadata"]
+        self.comments += [
+            "can be toggled true/false if you encounter youtube-dl err 429 (too much consecutive downloads"]
+        self.comments += ["Not user modifiable"]
+        self.comments += [
+            "Ideally, should only be \"best\" (default) or \"mp3\" so the eventual thumbnail is correctly embedded most of the time (opus and mp3 format are the main focus of dev)"]
+        self.comments += ["Not user modifiable"]
+        self.comments += ["Do not download more than this much music from one source"]
         self.youtube_dl_args = {"ignore-errors": True,
                                 "max-downloads": 500,
                                 "quiet": False,
@@ -48,8 +103,7 @@ class Config:
                                 "add-metadata": True,
                                 "force-ipv4": True,
                                 "extract-audio": True,
-                                "no-continue": True,
-                                "audio-quality": 0,
+                                "audio-format": "best",
                                 "write-thumbnail": True,
                                 "playlist-end": 150}
 
@@ -73,9 +127,13 @@ class Config:
     def load(self):
         # check if config file already present, if so load it, else create it
         config_file_path = self.config_directory+"config.toml"
+
+        # because we don't want to save comments as a option in config file, need to pass it from default
+        comment_save = self.comments.copy()
         if os.path.isfile(config_file_path):
             config_dict = toml.load(config_file_path)
             self.__dict__ = config_dict
+            self.__dict__["comments"] = comment_save
 
             # check if no major version change
             # no exception if there is no self.version as 'or' short-circuit
@@ -91,63 +149,26 @@ class Config:
                 os.system("rm -f " + self.config_directory+"archive.txt")
             self.write()
         else:
-            print("Hey! It looks like it's the first time you used auto-ytdl.\nYou may want to see the help menu and edit the configuration to suit your needs")
+            print("Hey! It looks like it's the first time you used auto-ytdl.\nYou may want to see the help menu and edit the configuration to suit your needs!\n\n\n")
             self.write()
 
     def write(self, path=str(Path.home())+"/.config/auto-ytdl/config.toml"):
         config_file_path = path
         with open(config_file_path, "w+") as f:
-            to_write = vars(self)
-            f.write(toml.dumps(to_write))
 
-            f.write("#Delete this file to restore defaults\n\n\n")
-            f.write("\n\n  # A quick explanation for every useful,\n\
-                    # user-modifiable option:\n\n\
-                    # other options are not intended\n\
-                    # to be modified by the user\n\n\n\
-                     # -library_path : path to your music library.\n\
-                    # auto-ytdl will dump mp3 files there.\n\
-                    # -pre/post command: shell command to run\n\
-                            # before/after aytl commands. Can be\n\
-                            # useful for stopping your music player\n\
-                            # or telling it to rescan your library\n\
-                    # - denylist_names: an array of things you\n\
-                            # don't want in your music metadata.\n\
-                            # Matches also lowercase and plural, so\n\
-                            # adding \"Lyric\" will ensure that the\n\
-                            # video \"Rick Astley - Never Gonna Give \n\
-                            # You Up (lyrics)\" will be tagged\n\
-                            # \"Rick Astley\" and\n\
-                            # \"Never Gonna Give You Up\"\n\
-                    # -min/max length (seconds): will not add \n\
-                            # shorter/longer music to your library,\n\
-                            # unless --force is used\n\
-                    # - url_list: list of artist you've added.\n\
-                            # You should use add/remove and not\n\
-                            # modify this directly, but you can\n\
-                    # - youtube_dl_args: youtube-dl '--' args: \n\
-                            # You can add above your own --options\n\
-                            # for youtube-dl, without the\n\
-                            # double dash.\n\
-                            # Write: 'option = true' for flags \n\
-                            # that do not take arguments,\n\
-                            # 'option = value' otherwise.\n\
-                            # option = false will disable it.\n\
-                            # Don't forget to wrap string\n\
-                            # values in \"\" quotes\n\n\n\
-                            # for example, setting\n\
-                            #audio-format=\"mp3\" is correct syntax\n\
-                            # \n\
-                            # max downloads: max downloads at once\n\
-                            # will abort if more downloads are\n\
-                            # attempted as this will understood as\n\
-                            # a potentially disastrous user error \n\
-                            # should so much (maybe unintended)\n\
-                            # titles be added to the user's library\n\
-                            # \n\
-                            # playlist-end : 150 means that you \n\
-                            # will not download more that 150\n\
-                            # titles of one source. You can modify\n\
-                            # it to any arbitraty high integer,\n\
-                            # but your the pre-download step\n\
-                            # will be much slower\n")
+            coms = self.comments.copy()
+
+            to_write = vars(self)
+            to_write.pop("comments")
+            conf = toml.dumps(to_write).splitlines()
+
+            # pad so lack of comment does not suppress options because of zip length mismatch
+            if len(conf) > len(coms):
+                coms.extend([""] * (len(conf) - len(coms)))
+
+            f.write(
+                "#This is the config file for auto-ytdl.\n#To reset auto-ytdl to defaults, you can entirely delete this file.\n\n")
+            for option, explication in zip(conf, coms):
+                f.write("# "+explication+"\n")
+                f.write(option + "\n")
+                f.write("\n")

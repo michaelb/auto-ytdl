@@ -18,13 +18,17 @@ class AYTDL:
         try:
             self.config.load()
         except Exception as inst:
+            print(inst)
             if str(inst) == "Major version change":
                 print("\033[91mWarning: " + str(inst) + "\033[0m")
                 print("A major version has been changed, and your configuration  was changed:\n - options were added\n - some may have been reset.\n\nYour old configuration file has been saved at " +
                       self.config.config_directory + "config.toml.backup\n\nI recommend to have a quick look at the new configuration to check if everything is alright.\nYou can do so via \"aytdl edit\"")
-            self.config.reset_soft()
+                self.config.reset_soft()
+                sys.exit(0)
 
-            sys.exit(0)
+            # if not a major version change, really bad problem with the config
+            print("Bad configuration file, you may want to check syntax. Delete the configuration file to reset to defaults")
+            sys.exit(1)
 
         self.args = get_args()
 
