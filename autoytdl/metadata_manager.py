@@ -97,6 +97,7 @@ def can_be_music(audio_tuple, config):
 
 
 def should_add(filepath, config):
+    return True  # TODO
     list_tags = openlist(config.path_to_metadata)
 
     instanceaudio = list(openaudio(filepath))

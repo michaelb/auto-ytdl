@@ -71,9 +71,48 @@ class AYTDL:
                 sys.exit(exit_code)
 
     def clean_tags(self):
+        def ok(filename):
+            for ext in self.config.valid_extensions:
+                if filename.endswith(ext):
+                    return True
+            return False
         temp_dir_path = self.config.temp_dir.name
         for filename in os.listdir(temp_dir_path):
-            clean(temp_dir_path+"/" + filename, self.config)
+            if ok(filename) and not filename.endswith(".temp.mp3"):
+                clean(temp_dir_path+"/" + filename, self.config)
+
+    def embed_thumbnail(self):
+        # TODO fix mp3, opus ok
+
+        temp_dir_path = self.config.temp_dir.name
+        for filenam in os.listdir(temp_dir_path):
+            print(filenam)
+        for filename in os.listdir(temp_dir_path):
+            # MP3 files
+            if filename.endswith(".mp3") and not filename.endswith(".temp.mp3"):
+
+                if os.path.isfile(temp_dir_path + "/"+filename[:-4]+".webp"):
+                    os.system("ffmpeg -i \"" + temp_dir_path + "/" +
+                              filename[:-4] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-4] + ".jpg\"  -v 0 -y")
+
+                print(temp_dir_path + "/"+filename[:-4]+".jpg")
+                if os.path.isfile(temp_dir_path + "/"+filename[:-4]+".jpg"):
+                    os.system("ffmpeg -i \"" + temp_dir_path + "/" + filename + "\" -i \"" + temp_dir_path + "/" +
+                              filename[:-4]+".jpg\"" + " -v 0 -y -map 0:0 -map 1:0 -codec copy -id3v2_version 3 -metadata:s:v title=\"Album cover\" -metadata:s:v comment=\"Cover (front)\" \"" + temp_dir_path + "/" + filename + "\"")
+
+                    # OPUS files
+            if filename.endswith(".opus") and not filename.endswith(".temp.opus"):
+                # convert webp
+                if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".webp"):
+                    os.system("ffmpeg -i \"" + temp_dir_path + "/" +
+                              filename[:-5] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-5] + ".jpg\"  -v 0 -y")
+                # if there is a jpg file, embed it
+                if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".jpg"):
+                    os.system("kid3-cli -c 'set picture:\"" + temp_dir_path + "/" +
+                              filename[:-5] + ".jpg\"" + " \"desc\"' \"" + temp_dir_path + "/"+filename+"\"")
+
+        for filenam in os.listdir(temp_dir_path):
+            print(filenam)
 
     def move_to_library(self):
         def ok(filename):
@@ -92,6 +131,8 @@ class AYTDL:
                     os.system("mv " + "\""+temp_dir_path+"/" + filename + "\"" +
                               " " + "\"" + self.config.library_path + "/" + filename+"\"")
 
+
+# ##END OF AYTDL CLASS
 
 def is_url(string):
     youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
@@ -154,7 +195,9 @@ def main():
             print("[downloading] " + url)
             a.download_to_temp(url, dateafter)
 
-        a.clean_tags()
+        if a.config.embed_thumbnail:
+            a.embed_thumbnail()
+        # a.clean_tags()
         a.move_to_library()
         a.config.youtube_dl_args["dateafter"] = date.today().strftime("%Y%m%d")
 
