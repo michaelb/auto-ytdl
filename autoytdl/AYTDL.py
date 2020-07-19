@@ -18,7 +18,6 @@ class AYTDL:
         try:
             self.config.load()
         except Exception as inst:
-            print(inst)
             if str(inst) == "Major version change":
                 print("\033[91mWarning: " + str(inst) + "\033[0m")
                 print("A major version has been changed, and your configuration  was changed:\n - options were added\n - some may have been reset.\n\nYour old configuration file has been saved at " +
@@ -53,6 +52,10 @@ class AYTDL:
                     self.config.youtube_dl_args["download-archive"] + " "
 
             return line
+
+        # in case url contains special shell symbols
+        if not ((url[0] == "\"" or url[0] == "'") and (url[-1] == "'" or url[-1] == "\"")):
+            url = "\""+url+"\""
 
         # here
         exit_code = os.system("youtube-dl " +
@@ -120,9 +123,10 @@ def main():
     # UPDATE COMMAND
     if command == "update":
         urls_to_update = a.args.get("update")
+        dateafter = a.config.youtube_dl_args.get('dateafter')
+
         if not type(urls_to_update) is list:
             urls_to_update = [urls_to_update]
-        dateafter = a.config.youtube_dl_args.get('dateafter')
         if not urls_to_update:  # list is empty
             # check if date is today so to not lose time
             if a.config.youtube_dl_args["dateafter"] == date.today().strftime("%Y%m%d"):

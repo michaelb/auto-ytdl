@@ -73,6 +73,10 @@ class Config:
             "Maximum length (in seconds) a music must have to be moved into the user's library (discarded otherwise)"]
         self.max_length = 600
 
+        self.comments += [
+            "Embed thumbnail when possible (for opus and mp3 format)"]
+        self.embed_thumbnail = True
+
         # youtube-dl args section
         self.comments += [""]  # padding
         self.comments += [
@@ -104,7 +108,7 @@ class Config:
                                 "force-ipv4": True,
                                 "extract-audio": True,
                                 "audio-format": "best",
-                                "write-thumbnail": True,
+                                "write-thumbnail": False,
                                 "playlist-end": 150}
 
     def reset_soft(self):
@@ -149,17 +153,17 @@ class Config:
                 os.system("rm -f " + self.config_directory+"archive.txt")
             self.write()
         else:
-            print("Hey! It looks like it's the first time you used auto-ytdl.\nYou may want to see the help menu and edit the configuration to suit your needs!\n\n\n")
+            print("Hey! It looks like it's the first time you are using auto-ytdl.\nYou may want to see the help menu and edit the configuration to suit your needs!\n\n\n")
             self.write()
 
     def write(self, path=str(Path.home())+"/.config/auto-ytdl/config.toml"):
         config_file_path = path
         with open(config_file_path, "w+") as f:
 
-            coms = self.comments.copy()
+            coms = Config().comments.copy()
 
             to_write = vars(self)
-            to_write.pop("comments")
+            to_write.pop("comments", None)
             conf = toml.dumps(to_write).splitlines()
 
             # pad so lack of comment does not suppress options because of zip length mismatch
