@@ -108,7 +108,7 @@ class Config:
                                 "force-ipv4": True,
                                 "extract-audio": True,
                                 "audio-format": "best",
-                                "write-thumbnail": False,
+                                "write-thumbnail": True,
                                 "playlist-end": 150}
 
     def reset_soft(self):
