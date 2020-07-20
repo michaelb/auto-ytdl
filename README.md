@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![](https://img.shields.io/badge/Release-v1.0.3-green.svg)
+![](https://img.shields.io/badge/Release-v1.1.0-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -32,7 +32,7 @@ Y'all know how we live in the 5G era, so for us music \* folks that would mean s
 - you have a limited data allowance anyway
 - spotify feels like both an ad gatling gun and a noisy radio (because of the network bandwith playing yo-yo)
 - your entry-level phone/PC 2.4GHz antenna can't deal with both Wi-Fi music streaming and bluetooth connection to headphone/speakers
-- youtube/yt music either replay the same 5 songs forever or goes its way on some crappy music that's unlike everything you like. It's a nice tool to discover new things, but not to actually listen to music
+- youtube/yt music either replay the same 5 songs forever or goes its way on some crappy music that's unlike everything you like. It's a nice tool to discover new things, but not to actually listen to music. Some other services\*\* may be relevant to audiophile-class folks, but down here the _de-facto_ service for music is Youtube.
 - yeah, music streaming is pretty not here yet
 
 [DISCLAIMER: personal opinion]
@@ -42,21 +42,21 @@ For people who truly enjoy music \*, nothing beats yet having a local library, e
 Auto-ytdl is there to help (you) with all that: there are tons of great artists that publish new songs everyday; having a local music library should not mean that we have to forsake listening to those!
 Plus, auto-ytdl comes with management of duplicates of newly-downloaded songs, based on metadata so you don't have multiples identical song but from different youtube channels.
 
-\*  (*yes* I know youtube and other video streaming services do not have extremely good audio, but it's out of convenience): hardcore audiophile abstain
+\* (_yes_ I know youtube and other video streaming services do not have extremely good audio, but it's out of convenience): hardcore audiophile abstain
+
+\*\* There are plans to add suport for soundclound and music-specific platforms, you can put a feature request, but those will not be implemented before version 2.x.x
+
 # Doesn't it exist already?
 
 No.
 
-However, (https://github.com/keshavbhatt/olivia) is a music player that propose a similar feature named 'smart playlist', the beta I tested could auto-download individual songs. You may want to check it out!
+However, https://github.com/keshavbhatt/olivia is a music player that propose a similar feature named 'smart playlist', the beta I tested could auto-download individual songs. You may want to check it out!
 
- It's more of an all-rounder and I believe auto-ytdl + your favorite music player may be a better combo *if your use case is similar to mine* 
-
-
+It's more of an all-rounder and I believe auto-ytdl + your favorite music player may be a better combo _if your use case is similar to mine_.
 
 [deserves mention for existing]
-The closest I could find is MediaHuman (paid, expensive, closed-source) Youtube-Downloader: as of writing, it seems to have 'tracking' capabilities, and little explications given.
-All this looked a bit fishy, it has a nice GUI though.
-Moreover, it only offers a .deb package for "GNU/Linux OS" and .deb support for Arch (btw I use Arch) is not first-class.
+The closest idea I could find is MediaHuman's (paid, expensive, closed-source) Youtube-Downloader: as of writing, it seems to have 'tracking' capabilities, and little explications given.
+All this looked a bit fishy, though it has a nice GUI. It also only offers a .deb package for "GNU/Linux OS" and .deb support for Arch (btw I use Arch) is not first-class.
 
 # How does it works?
 
@@ -72,8 +72,8 @@ see also [Usage](#usage) and [Examples](#examples)
 
 # Features
 
-- Auto-download of all new music from a simple command (video is auto-converted to mp3)
-- Add/remove/list all your favorite music providers (not tested on anything other than youtube channels)
+- Auto-download of all new music from a simple command (music-only download, best quality available (often opus format ~160kbps for youtube), no conversion by default)
+- Add/remove/list all your favorite music providers; mainly tested on youtube channels, but should work on playlist, and other video platforms
 - Clean tags, so e.g. the displayed artist name does _not_ look like "Nirvana (lyrics) [Music video] official" but just "Nirvana"
 - Filter by tags so only 'true' and unique songs (according to config) end up in your library
 - Ignore the filter if you really want that weird video
@@ -81,14 +81,17 @@ see also [Usage](#usage) and [Examples](#examples)
 - Comprehensive config options
 - No missing/skipping/forgetting songs, even if a previous download was interrupted
 - Download video currently playing in chrome/youtube (link that one to a shortcut)
+- Thumbnail embedding supported for mp3 and opus (default) format
 
 # Dependencies
 
 - youtube-dl
 - ffmpeg
-- python3-pip (for manual install)
+- python3-pip (for manual install / build)
 
-For every feature to work, you need a XDG-compliant desktop environment
+For every feature to work, you need a XDG-compliant desktop environment.
+
+Some python modules, such as music-tag and mutagen, will be pulled automatically
 
 # Install
 

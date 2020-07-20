@@ -15,7 +15,19 @@ from autoytdl.name_cleaner import clean
 class AYTDL:
     def __init__(self):
         self.config = Config()
-        self.config.load()
+        try:
+            self.config.load()
+        except Exception as inst:
+            if str(inst) == "Major version change":
+                print("\033[91mWarning: " + str(inst) + "\033[0m")
+                print("A major version has been changed, and your configuration  was changed:\n - options were added\n - some may have been reset.\n\nYour old configuration file has been saved at " +
+                      self.config.config_directory + "config.toml.backup\n\nI recommend to have a quick look at the new configuration to check if everything is alright.\nYou can do so via \"aytdl edit\"")
+                self.config.reset_soft()
+                sys.exit(0)
+
+            # if not a major version change, really bad problem with the config
+            print("Bad configuration file, you may want to check syntax. Delete the configuration file to reset to defaults")
+            sys.exit(1)
 
         self.args = get_args()
 
@@ -41,6 +53,10 @@ class AYTDL:
 
             return line
 
+        # in case url contains special shell symbols
+        if not ((url[0] == "\"" or url[0] == "'") and (url[-1] == "'" or url[-1] == "\"")):
+            url = "\""+url+"\""
+
         # here
         exit_code = os.system("youtube-dl " +
                               prepare_ytdl_commmand_line(dateafter) + " " + url)
@@ -55,14 +71,59 @@ class AYTDL:
                 sys.exit(exit_code)
 
     def clean_tags(self):
+        def ok(filename):
+            for ext in self.config.valid_extensions:
+                if filename.endswith(ext):
+                    return True
+            return False
         temp_dir_path = self.config.temp_dir.name
         for filename in os.listdir(temp_dir_path):
-            clean(temp_dir_path+"/" + filename, self.config)
+            if ok(filename) and not filename.endswith(".temp.mp3"):
+                clean(temp_dir_path+"/" + filename, self.config)
+
+    def embed_thumbnail(self):
+        # TODO fix mp3, opus ok
+
+        temp_dir_path = self.config.temp_dir.name
+        for filename in os.listdir(temp_dir_path):
+            # MP3 files
+            if filename.endswith(".mp3") and not filename.endswith(".temp.mp3"):
+
+                if os.path.isfile(temp_dir_path + "/"+filename[:-4]+".webp"):
+                    os.system("ffmpeg -i \"" + temp_dir_path + "/" +
+                              filename[:-4] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-4] + ".jpg\"  -v 0 -y")
+
+                if os.path.isfile(temp_dir_path + "/"+filename[:-4]+".jpg"):
+                    # create temp file as ffmpeg cannot add thmbnail in-place
+                    os.system("mv \"" + temp_dir_path + "/"+filename +
+                              "\" \"" + temp_dir_path + "/"+filename[:-4]+".temp.mp3\"")
+                    os.system("ffmpeg -i \"" + temp_dir_path + "/" + filename[:-4]+".temp.mp3" + "\" -i \"" + temp_dir_path + "/" +
+                              filename[:-4]+".jpg\"" + " -v 0 -y -map 0:0 -map 1:0 -codec copy -id3v2_version 3 -metadata:s:v title=\"Album cover\" -metadata:s:v comment=\"Cover (front)\" \"" + temp_dir_path + "/" + filename + "\"")
+
+                    os.system("rm -f \"" + temp_dir_path +
+                              "/"+filename[:-4]+".temp.mp3\"")
+
+                    # OPUS files
+            if filename.endswith(".opus") and not filename.endswith(".temp.opus"):
+                # convert webp
+                if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".webp"):
+                    os.system("ffmpeg -i \"" + temp_dir_path + "/" +
+                              filename[:-5] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-5] + ".jpg\"  -v 0 -y")
+                # if there is a jpg file, embed it
+                if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".jpg"):
+                    os.system("kid3-cli -c 'set picture:\"" + temp_dir_path + "/" +
+                              filename[:-5] + ".jpg\"" + " \"desc\"' \"" + temp_dir_path + "/"+filename+"\"")
 
     def move_to_library(self):
+        def ok(filename):
+            for ext in self.config.valid_extensions:
+                if filename.endswith(ext):
+                    return True
+            return False
+
         temp_dir_path = self.config.temp_dir.name
         for filename in os.listdir(temp_dir_path):
-            if filename.endswith(".mp3") and not filename.endswith(".temp.mp3"):
+            if ok(filename) and not filename.endswith(".temp.mp3"):
                 # this manage the metadata archive
                 if should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
@@ -70,6 +131,8 @@ class AYTDL:
                     os.system("mv " + "\""+temp_dir_path+"/" + filename + "\"" +
                               " " + "\"" + self.config.library_path + "/" + filename+"\"")
 
+
+# ##END OF AYTDL CLASS
 
 def is_url(string):
     youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
@@ -101,35 +164,69 @@ def main():
     # UPDATE COMMAND
     if command == "update":
         urls_to_update = a.args.get("update")
+        dateafter = a.config.youtube_dl_args.get('dateafter')
+
+        # flag to check if potentially dangerous -i or -f, and decide if date update
+        full_update = False
         if not type(urls_to_update) is list:
             urls_to_update = [urls_to_update]
-        dateafter = a.config.youtube_dl_args.get('dateafter')
-        if not urls_to_update:  # list is empty
+        # list is empty, full update
+        if not urls_to_update and not a.args.get("playing"):
+            full_update = True
+            # check if date is today so to not lose time
+            if a.config.youtube_dl_args["dateafter"] == date.today().strftime("%Y%m%d") and not a.args.get("force") and not a.args.get("include_old") and not a.args.get("playing"):
+                print("Already up to date, nothing to do")
+                return 0
             urls_to_update = a.config.url_list
+            if not urls_to_update:
+                print("Your list of music sources is empty, you may want to \"add\" your favorite youtube channels, playlists, or other sources")
+                sys.exit(0)
 
         # --playing should always download even if old,
         # thus it implies include-old
         if a.args.get("include_old") or a.args.get("playing"):
             dateafter = 19600101
+            # playing remove urls to update anyway
+            if full_update and not a.args.get("playing"):
+                ask = input("Looks like you are trying to run a full update with --include-old flag. This will download up to (config:playlist-end) " +
+                            str(a.config.youtube_dl_args["playlist-end"]) + " songs from each source.\nAre you sure you want to do this? [y/N]:")
+                if ask == "y" or ask == "Y" or ask == "Yes" or ask == "yes":
+                    print("This may take a long time, starting now...")
+                else:
+                    sys.exit(0)
+
         # force is a real FORCE and thus implies include-old
         if a.args.get("force"):
             a.config.force = True
             dateafter = 19600101
+            if full_update and not a.args.get("playing"):
+                ask = input("Looks like you are trying to run a full update with the --force flag. This will download up to (config:playlist-end) "+str(
+                    a.config.youtube_dl_args["playlist-end"]) + " songs from each source, including songs you have are downloaded (true duplicates will not be added).\nAre you sure you want to do this? [y/N]:")
+                if ask == "y" or ask == "Y" or ask == "Yes" or ask == "yes":
+                    print("This may take a long time, starting now...")
+                else:
+                    sys.exit(0)
 
         if a.args.get("playing"):
             urls_to_update = []
-            current = subprocess.check_output(
-                "strings ~/'.config/google-chrome/Default/Current Session' | 'grep' -E '^https?://www.youtube'  | tail -1", shell=True)
-            if current != b'' and current != '':
-                urls_to_update = [str(current)[2:-2]]
 
+            current = subprocess.check_output(
+                "strings \""+str(Path.home())+"/.config/google-chrome/Default/Current Session\" | grep -E \"^https?://www.youtube\"  | tail -1", shell=True)
+            if current != b'' and current != '':
+                urls_to_update = [str(current)[2:-3]]
+
+        # download for real
         for url in urls_to_update:
             print("[downloading] " + url)
             a.download_to_temp(url, dateafter)
 
+        if a.config.embed_thumbnail:
+            a.embed_thumbnail()
         a.clean_tags()
         a.move_to_library()
-        a.config.youtube_dl_args["dateafter"] = date.today().strftime("%Y%m%d")
+        if full_update:
+            a.config.youtube_dl_args["dateafter"] = date.today().strftime(
+                "%Y%m%d")
 
     # ADD COMMAND
     elif command == "add":

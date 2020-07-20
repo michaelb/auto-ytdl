@@ -1,20 +1,27 @@
 #!/bin/env python3
 
-from mp3_tagger import MP3File, VERSION_1, VERSION_2, VERSION_BOTH
 from sys import argv
 import os
 from math import floor
-from mutagen.mp3 import MP3
+
+import mutagen
 
 
-def openmp3(filepath):
+def unwrap(x):
+    if type(x) is str:
+        return x
+    if type(x) is list and x:  # x not an empty list
+        return x[0]
+    else:
+        return "unknown-auto-ytdl"
+
+
+def openaudio(filepath):
     # Create MP3File instance.
-    mp3 = MP3File(filepath)
-    mp3.set_version(VERSION_2)
+    audio = mutagen.File(filepath)
     # Get/set/del tags value.
-    title = mp3.song.rstrip('\x00')
-    artist = mp3.artist.rstrip('\x00')
-    audio = MP3(filepath)
+    title = unwrap(audio["title"]).rstrip('\x00')
+    artist = unwrap(audio["artist"]).rstrip('\x00')
     length = floor(audio.info.length)
     return (title, artist, length)
 
@@ -28,9 +35,9 @@ def openlist(path_to_metadata):
     return list_tags
 
 
-def append_to_file(tuple_mp3, path_to_metadata):
+def append_to_file(tuple_audio, path_to_metadata):
     fichier = open(path_to_metadata, "a")
-    fichier.write(str(tuple_mp3) + "\n")
+    fichier.write(str(tuple_audio) + "\n")
     fichier.close()
 
 
@@ -78,35 +85,36 @@ def significant_words(text):
     return string
 
 
-def inlist(mp3_tuple, liste):
+def inlist(audio_tuple, liste):
     for x in liste:
-        if equal(eval(x), mp3_tuple):
+        if equal(eval(x), audio_tuple):
             return True
     return False
 
 
-def can_be_music(mp3_tuple, config):
-    return mp3_tuple[0] != "" and mp3_tuple[1] != "" and mp3_tuple[2] >= config.min_length and mp3_tuple[2] <= config.max_length
+def can_be_music(audio_tuple, config):
+    return audio_tuple[0] != "" and audio_tuple[1] != "" and audio_tuple[2] >= config.min_length and audio_tuple[2] <= config.max_length
 
 
-def should_add(mp3_file, config):
+def should_add(filepath, config):
+    return True  # TODO
     list_tags = openlist(config.path_to_metadata)
 
-    instancemp3 = list(openmp3(mp3_file))
+    instanceaudio = list(openaudio(filepath))
 
-    if not can_be_music(instancemp3, config) and not config.force:
-        print("[probably not a music file, not adding] ", tuple(instancemp3))
+    if not can_be_music(instanceaudio, config) and not config.force:
+        print("[probably not a music file, not adding] ", tuple(instanceaudio))
         return False
 
-    for i in range(len(instancemp3)):
-        instancemp3[i] = str(significant_words(str(instancemp3[i])))
-    tuple_mp3 = tuple(instancemp3)
+    for i in range(len(instanceaudio)):
+        instanceaudio[i] = str(significant_words(str(instanceaudio[i])))
+    tuple_audio = tuple(instanceaudio)
 
-    if inlist(tuple_mp3, list_tags) and not config.force:
-        print("[already present in metadata archive, skipping]", tuple_mp3)
+    if inlist(tuple_audio, list_tags) and not config.force:
+        print("[already present in metadata archive, skipping]", tuple_audio)
         return False
     else:
-        if not inlist(tuple_mp3, list_tags):
-            print("[adding to metadata archive]", tuple_mp3)
-            append_to_file(tuple_mp3, config.path_to_metadata)
+        if not inlist(tuple_audio, list_tags):
+            print("[adding to metadata archive]", tuple_audio)
+            append_to_file(tuple_audio, config.path_to_metadata)
         return True

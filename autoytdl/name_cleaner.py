@@ -4,8 +4,8 @@ import sys
 import os
 import re
 
-from mp3_tagger import MP3File, VERSION_2
-"""to clean trash from a .mp3 tags"""
+import music_tag
+"""to clean trash from a audio file tags"""
 
 
 def remove_brackets(string):
@@ -37,7 +37,11 @@ def cleanstr(string, config):
 
 
 def fix_duration(filepath):
-    # Create a temporary name for the current file.
+
+    if not re.match(r'.*\.mp3', str(filepath)):
+        return
+
+    # Create a temporary name for the current file, mp3 only!
     # i.e: 'sound.mp3' -> 'sound_temp.mp3'
     temp_filepath = filepath[:len(filepath) - len('.mp3')] + '_temp' + '.mp3'
 
@@ -55,13 +59,23 @@ def fix_duration(filepath):
 
 
 def clean(filepath, config):
-    mp3 = MP3File(filepath)
-    mp3.set_version(VERSION_2)
-    title = mp3.song
-    artist = mp3.artist
+    # "only clean music metadata"
+    ok_extension = False
+    for ext in config.valid_extensions:
+        ok_extension |= filepath.endswith(ext)
+    if not ok_extension:
+        return
 
-    mp3.song = cleanstr(title, config)
-    mp3.artist = cleanstr(artist, config)
+    audio = music_tag.load_file(filepath)
+    title = audio["title"].value
+    artist = audio["artist"].value  # only consider first tag if there is many
 
-    mp3.save()
-    fix_duration(filepath)
+    audio["title"] = cleanstr(title, config)
+    audio["artist"] = cleanstr(artist, config)
+
+    audio.save()
+
+    # if mp3, fix length issue: no quality is lost by re-encode but
+    # bitrate and length will be fixed
+    if re.match(r'.*\.mp3', str(filepath)):
+        fix_duration(filepath)

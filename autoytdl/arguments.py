@@ -9,9 +9,8 @@ def get_args():
 
     _description = 'A simple, configurable and automatic youtube-dl wrapper for\
     updating your local library.'
-    _usage = '%(prog)s [add | remove | list | update | edit] [URL ..] [OPTION ..]\nRun \"aytld COMMAND --help\" for more information.'
+    _usage = 'aytdl [add | remove | list | update | edit] [-hfip] [URL...] \nRun \"aytld COMMAND --help\" for more information.\n\n'
     _conflict_handler = 'resolve'
-
     parser = argparse.ArgumentParser(
         description=_description,
         conflict_handler=_conflict_handler,
@@ -22,17 +21,17 @@ def get_args():
     subs.dest = "COMMANDS"
 
     #
-    add_parser = subs.add_parser('add')
+    add_parser = subs.add_parser('add', usage="aytdl add <URL...>")
     add_parser.add_argument(
         'add', nargs='+',
         help="add one or more channel (urls) as music source")
 
     #
-    remove_parser = subs.add_parser('remove')
+    remove_parser = subs.add_parser('remove', usage="aytdl remove < URL... >")
     remove_parser.add_argument('remove', nargs='+',
                                help="remove a channel from tracking")
     #
-    list_parser = subs.add_parser('list')
+    list_parser = subs.add_parser('list', usage="aytdl list [-h]")
     list_parser.add_argument('list', action='store_true',
                              help="list all channels")
 
