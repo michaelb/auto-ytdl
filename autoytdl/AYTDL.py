@@ -111,8 +111,15 @@ class AYTDL:
                               filename[:-5] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-5] + ".jpg\"  -v 0 -y")
                 # if there is a jpg file, embed it
                 if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".jpg"):
-                    os.system("kid3-cli -c 'set picture:\"" + temp_dir_path + "/" +
-                              filename[:-5] + ".jpg\"" + " \"desc\"' \"" + temp_dir_path + "/"+filename+"\"")
+                    # problem if ' in filename so temp move
+                    os.system("mv \""+temp_dir_path + "/" +
+                              filename[:-5] + ".jpg\""+" "+temp_dir_path + "/" + "in.jpg")
+                    os.system("mv \""+temp_dir_path + "/" +
+                              filename + "\" " + temp_dir_path + "/" + "in.opus")
+                    os.system("kid3-cli -c 'set picture:\"in.jpg\"" +
+                              " \"desc\"' \"" + temp_dir_path + "/" + "in.opus\"")
+                    os.system("mv  "+temp_dir_path + "/" + "in.opus \""+temp_dir_path +
+                              "/" + filename + "\"")
 
     def move_to_library(self):
         def ok(filename):

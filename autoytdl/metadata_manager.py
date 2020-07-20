@@ -4,25 +4,18 @@ from sys import argv
 import os
 from math import floor
 
+import music_tag
 import mutagen
-
-
-def unwrap(x):
-    if type(x) is str:
-        return x
-    if type(x) is list and x:  # x not an empty list
-        return x[0]
-    else:
-        return "unknown-auto-ytdl"
 
 
 def openaudio(filepath):
     # Create MP3File instance.
-    audio = mutagen.File(filepath)
+    audio = music_tag.load_file(filepath)
     # Get/set/del tags value.
-    title = unwrap(audio["title"]).rstrip('\x00')
-    artist = unwrap(audio["artist"]).rstrip('\x00')
-    length = floor(audio.info.length)
+    title = audio["title"].value.rstrip('\x00')
+    artist = audio["artist"].value.rstrip('\x00')
+    audio2 = mutagen.File(filepath)
+    length = floor(audio2.info.length)
     return (title, artist, length)
 
 
@@ -97,7 +90,6 @@ def can_be_music(audio_tuple, config):
 
 
 def should_add(filepath, config):
-    return True  # TODO
     list_tags = openlist(config.path_to_metadata)
 
     instanceaudio = list(openaudio(filepath))
