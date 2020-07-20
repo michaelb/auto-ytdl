@@ -166,10 +166,12 @@ def main():
         urls_to_update = a.args.get("update")
         dateafter = a.config.youtube_dl_args.get('dateafter')
 
-        full_update = False  # flag to check if potentially dangerous -i or -f
+        # flag to check if potentially dangerous -i or -f, and decide if date update
+        full_update = False
         if not type(urls_to_update) is list:
             urls_to_update = [urls_to_update]
-        if not urls_to_update:  # list is empty
+        # list is empty, full update
+        if not urls_to_update and not a.args.get("playing"):
             full_update = True
             # check if date is today so to not lose time
             if a.config.youtube_dl_args["dateafter"] == date.today().strftime("%Y%m%d") and not a.args.get("force") and not a.args.get("include_old") and not a.args.get("playing"):
@@ -219,7 +221,9 @@ def main():
             a.embed_thumbnail()
         a.clean_tags()
         a.move_to_library()
-        a.config.youtube_dl_args["dateafter"] = date.today().strftime("%Y%m%d")
+        if full_update:
+            a.config.youtube_dl_args["dateafter"] = date.today().strftime(
+                "%Y%m%d")
 
     # ADD COMMAND
     elif command == "add":
