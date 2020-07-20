@@ -117,13 +117,15 @@ class Config:
         # restore default config but try to keep some user changes
         clean = Config()
         # values to preserve
-        for key in ["config_directory", "library_path", "path_to_metadata", "clean_exit", "pre_command", "post_command", "denylist_names", "min_length", "max_length", "url_list", "valid_extensions"]:
-            clean.__dict__[key] = self.__dict__[key]
+        for key in ["config_directory", "library_path", "path_to_metadata", "clean_exit", "pre_command", "post_command", "denylist_names", "min_length", "max_length", "url_list", "valid_extensions", "embed_thumbnail"]:
+            if key in self.__dict__:
+                clean.__dict__[key] = self.__dict__[key]
 
         # values of youtube_dl_args to preserve
         for ytkey in ["max-downloads", "dateafter", "playlist-end"]:
-            clean.__dict__["youtube_dl_args"][ytkey] = self.__dict__[
-                "youtube_dl_args"][ytkey]
+            if ytkey in self.__dict__:
+                clean.__dict__["youtube_dl_args"][ytkey] = self.__dict__[
+                    "youtube_dl_args"][ytkey]
 
         self = clean
         self.write()
