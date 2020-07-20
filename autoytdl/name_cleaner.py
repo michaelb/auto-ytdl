@@ -4,7 +4,7 @@ import sys
 import os
 import re
 
-import mutagen
+import music_tag
 """to clean trash from a audio file tags"""
 
 
@@ -58,19 +58,17 @@ def fix_duration(filepath):
     os.remove(temp_filepath)
 
 
-def unwrap(x):
-    if type(x) is str:
-        return x
-    if type(x) is list and x:  # x not an empty list
-        return x[0]
-    else:
-        return "unknown-auto-ytdl"
-
-
 def clean(filepath, config):
-    audio = mutagen.File(filepath)
-    title = unwrap(audio["title"])
-    artist = unwrap(audio["artist"])
+    # "only clean music metadata"
+    ok_extension = False
+    for ext in config.valid_extensions:
+        ok_extension |= filepath.endswith(ext)
+    if not ok_extension:
+        return
+
+    audio = music_tag.load_file(filepath)
+    title = audio["title"].value
+    artist = audio["artist"].value  # only consider first tag if there is many
 
     audio["title"] = cleanstr(title, config)
     audio["artist"] = cleanstr(artist, config)
