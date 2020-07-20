@@ -178,6 +178,9 @@ def main():
                 print("Already up to date, nothing to do")
                 return 0
             urls_to_update = a.config.url_list
+            if not urls_to_update:
+                print("Your list of music sources is empty, you may want to \"add\" your favorite youtube channels, playlists, or other sources")
+                sys.exit(0)
 
         # --playing should always download even if old,
         # thus it implies include-old

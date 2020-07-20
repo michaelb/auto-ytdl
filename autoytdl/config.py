@@ -176,3 +176,5 @@ class Config:
                 f.write("# "+explication+"\n")
                 f.write(option + "\n")
                 f.write("\n")
+
+            f.write("#PUT YOUR YOUTUBE-DL \"--\" OPTIONS / OPTION-ARGUMENTS BELOW\n")
