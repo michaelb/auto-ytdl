@@ -1,11 +1,22 @@
 import sys
 import os
 import re
-import tempfile
 import shutil
+import tempfile
 import subprocess
-from pathlib import Path
-from datetime import date
+try:
+    from pathlib import Path
+    from datetime import date
+    import music_tag
+    import mutagen
+    import argparse
+except Exception:
+    print("Fetching auto-ytdl pip dependencies. (install as --user)")
+    os.system(
+        "pip install --user pathlib datetime music_tag mutagen argparse")
+    print("Done, please re-launch auto-ytdl")
+    sys.exit(0)
+
 from autoytdl.config import Config
 from autoytdl.arguments import get_args
 from autoytdl.metadata_manager import should_add
