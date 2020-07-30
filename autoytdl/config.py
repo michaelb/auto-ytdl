@@ -92,6 +92,7 @@ class Config:
         self.comments += ["Don't set to false unless you don't want title/artist metadata"]
         self.comments += [
             "can be toggled true/false if you encounter youtube-dl err 429 (too much consecutive downloads"]
+        self.comments += ["You should not change this"]
         self.comments += ["Not user modifiable"]
         self.comments += [
             "Ideally, should only be \"best\" (default) or \"mp3\" so the eventual thumbnail is correctly embedded most of the time (opus and mp3 format are the main focus of dev)"]
@@ -108,6 +109,7 @@ class Config:
                                 "force-ipv4": True,
                                 "extract-audio": True,
                                 "audio-format": "best",
+                                "audio-quality": 0,
                                 "write-thumbnail": True,
                                 "playlist-end": 150}
 
