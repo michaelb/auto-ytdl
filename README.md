@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![](https://img.shields.io/badge/Release-v1.1.1-green.svg)
+![](https://img.shields.io/badge/Release-v1.1.2-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -87,6 +87,7 @@ see also [Usage](#usage) and [Examples](#examples)
 
 - youtube-dl
 - ffmpeg
+- kid3-cli [AUR](https://aur.archlinux.org/packages/kid3-cli/)
 - python3-pip (for manual install / build)
 
 For every feature to work, you need a XDG-compliant desktop environment.

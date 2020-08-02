@@ -68,7 +68,7 @@ class AYTDL:
         if not ((url[0] == "\"" or url[0] == "'") and (url[-1] == "'" or url[-1] == "\"")):
             url = "\""+url+"\""
 
-        # here
+        # here we run youtube-dl
         exit_code = os.system("youtube-dl " +
                               prepare_ytdl_commmand_line(dateafter) + " " + url)
         if exit_code != 0:  # may be a youtube-dl error taht is recoverable
