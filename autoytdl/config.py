@@ -92,10 +92,10 @@ class Config:
         self.comments += ["Don't set to false unless you don't want title/artist metadata"]
         self.comments += [
             "can be toggled true/false if you encounter youtube-dl err 429 (too much consecutive downloads"]
-        self.comments += ["You should not change this"]
         self.comments += ["Not user modifiable"]
         self.comments += [
             "Ideally, should only be \"best\" (default) or \"mp3\" so the eventual thumbnail is correctly embedded most of the time (opus and mp3 format are the main focus of dev)"]
+        self.comments += ["You should not change this"]
         self.comments += ["Not user modifiable"]
         self.comments += ["Do not download more than this much music from one source"]
         self.youtube_dl_args = {"ignore-errors": True,
