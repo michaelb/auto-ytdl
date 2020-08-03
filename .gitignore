@@ -5,8 +5,11 @@
 *.so
 *.dylib
 
+# spec build artifact from pyinstaller
+*.spec
 
-# because i suspect its fucks up the checksum
+
+# because i suspect its f up the checksum
 PKGBUILD
 
 # Test binary, built with `go test -c`
