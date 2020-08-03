@@ -50,7 +50,7 @@ Plus, auto-ytdl comes with management of duplicates of newly-downloaded songs, b
 
 No.
 
-However, https://github.com/keshavbhatt/olivia is a music player that propose a similar feature named 'smart playlist', the beta I tested could auto-download individual songs. You may want to check it out!
+However, [olivia](https://github.com/keshavbhatt/olivia) is a music player that propose a similar feature named 'smart playlist', the beta I tested could auto-download individual songs. You may want to check it out!
 
 It's more of an all-rounder and I believe auto-ytdl + your favorite music player may be a better combo _if your use case is similar to mine_.
 
