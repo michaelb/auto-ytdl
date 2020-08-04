@@ -21,6 +21,7 @@ from autoytdl.config import Config
 from autoytdl.arguments import get_args
 from autoytdl.metadata_manager import should_add
 from autoytdl.name_cleaner import clean
+from autoytdl.thumbnail_embedder import embed_mp3, embed_opus
 
 
 class AYTDL:
@@ -99,38 +100,11 @@ class AYTDL:
         for filename in os.listdir(temp_dir_path):
             # MP3 files
             if filename.endswith(".mp3") and not filename.endswith(".temp.mp3"):
+                embed_mp3(temp_dir_path, filename)
 
-                if os.path.isfile(temp_dir_path + "/"+filename[:-4]+".webp"):
-                    os.system("ffmpeg -i \"" + temp_dir_path + "/" +
-                              filename[:-4] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-4] + ".jpg\"  -v 0 -y")
-
-                if os.path.isfile(temp_dir_path + "/"+filename[:-4]+".jpg"):
-                    # create temp file as ffmpeg cannot add thmbnail in-place
-                    os.system("mv \"" + temp_dir_path + "/"+filename +
-                              "\" \"" + temp_dir_path + "/"+filename[:-4]+".temp.mp3\"")
-                    os.system("ffmpeg -i \"" + temp_dir_path + "/" + filename[:-4]+".temp.mp3" + "\" -i \"" + temp_dir_path + "/" +
-                              filename[:-4]+".jpg\"" + " -v 0 -y -map 0:0 -map 1:0 -codec copy -id3v2_version 3 -metadata:s:v title=\"Album cover\" -metadata:s:v comment=\"Cover (front)\" \"" + temp_dir_path + "/" + filename + "\"")
-
-                    os.system("rm -f \"" + temp_dir_path +
-                              "/"+filename[:-4]+".temp.mp3\"")
-
-                    # OPUS files
+            # OPUS files
             if filename.endswith(".opus") and not filename.endswith(".temp.opus"):
-                # convert webp
-                if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".webp"):
-                    os.system("ffmpeg -i \"" + temp_dir_path + "/" +
-                              filename[:-5] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-5] + ".jpg\"  -v 0 -y")
-                # if there is a jpg file, embed it
-                if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".jpg"):
-                    # problem if ' in filename so temp move
-                    os.system("mv \""+temp_dir_path + "/" +
-                              filename[:-5] + ".jpg\""+" "+temp_dir_path + "/" + "in.jpg")
-                    os.system("mv \""+temp_dir_path + "/" +
-                              filename + "\" " + temp_dir_path + "/" + "in.opus")
-                    os.system("kid3-cli -c 'set picture:\"in.jpg\"" +
-                              " \"desc\"' \"" + temp_dir_path + "/" + "in.opus\"")
-                    os.system("mv  "+temp_dir_path + "/" + "in.opus \""+temp_dir_path +
-                              "/" + filename + "\"")
+                embed_opus(temp_dir_path, filename)
 
     def move_to_library(self):
         def ok(filename):
