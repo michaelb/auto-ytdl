@@ -2,6 +2,7 @@
 
 from sys import argv
 import os
+from pathlib import Path
 from math import floor
 
 import music_tag
@@ -20,16 +21,16 @@ def openaudio(filepath):
 
 
 def openlist(path_to_metadata):
-    if not os.path.exists(path_to_metadata):
-        os.system("touch " + path_to_metadata)
-    fichier = open(path_to_metadata, "r")
+    if not Path(path_to_metadata).exists():
+        Path(path_to_metadata).touch()
+    fichier = open(str(Path(path_to_metadata)), "r")
     list_tags = set(fichier.readlines())
     fichier.close()
     return list_tags
 
 
 def append_to_file(tuple_audio, path_to_metadata):
-    fichier = open(path_to_metadata, "a")
+    fichier = open(str(Path(path_to_metadata)), "a")
     fichier.write(str(tuple_audio) + "\n")
     fichier.close()
 
@@ -92,7 +93,7 @@ def can_be_music(audio_tuple, config):
 def should_add(filepath, config):
     list_tags = openlist(config.path_to_metadata)
 
-    instanceaudio = list(openaudio(filepath))
+    instanceaudio = list(openaudio(str(Path(filepath))))
 
     if not can_be_music(instanceaudio, config) and not config.force:
         print("[probably not a music file, not adding] ", tuple(instanceaudio))

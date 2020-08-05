@@ -3,6 +3,7 @@
 import sys
 import os
 import re
+from pathlib import Path
 
 import music_tag
 """to clean trash from a audio file tags"""
@@ -49,7 +50,7 @@ def fix_duration(filepath):
     temp_filepath = filepath[:len(filepath) - len('.mp3')] + '_temp' + '.mp3'
 
     # Rename the file to the temporary name.
-    os.rename(filepath, temp_filepath)
+    Path(filepath).replace(Path(temp_filepath))
 
     # Run the ffmpeg command to copy this file.
     # This fixes the duration and creates a new file with the original name.
@@ -58,7 +59,7 @@ def fix_duration(filepath):
     os.system(command)
 
     # Remove the temporary file that had the wrong duration in its metadata.
-    os.remove(temp_filepath)
+    Path(temp_filepath).unlink()
 
 
 def clean(filepath, config):
@@ -69,7 +70,7 @@ def clean(filepath, config):
     if not ok_extension:
         return
 
-    audio = music_tag.load_file(filepath)
+    audio = music_tag.load_file(str(Path(filepath)))
     title = audio["title"].value
     artist = audio["artist"].value  # only consider first tag if there is many
 

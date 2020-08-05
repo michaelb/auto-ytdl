@@ -1,6 +1,7 @@
-from pathlib import Path, PurePath
+from pathlib import Path
 import tempfile
 import os
+import platform
 import toml
 from datetime import date
 from autoytdl.version import __version__
@@ -12,13 +13,20 @@ class Config:
         # defaults parameters
         path_to_home = str(Path.home())
         temp_dir = tempfile.TemporaryDirectory()
-        if not os.path.exists(path_to_home+"/.config"):
-            os.makedirs(path_to_home+"/.config")
-        if not os.path.exists(path_to_home+"/.config/auto-ytdl"):
-            os.makedirs(path_to_home+"/.config/auto-ytdl")
-        # cahne from musictest to real Music folder
-        if not os.path.exists(path_to_home+"/Music"):
-            os.makedirs(path_to_home+"/Music")
+
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            config_dir = ".config"
+        elif platform.system() == "Windows":
+            config_dir = "Documents"
+        else:
+            raise Exception("Unsupported platform")
+
+        # create various path if they do not exit
+        Path(path_to_home+"/" + config_dir).mkdir(parents=True, exist_ok=True)
+        Path(path_to_home+"/" + config_dir +
+             "/auto-ytdl").mkdir(parents=True, exist_ok=True)
+        # check if default library folder exists
+        Path(path_to_home+"/Music").mkdir(parents=True, exist_ok=True)
 
         # ORDER OF COMMENTS AND OPTIONS IS PARAMOUNT TO CORRECT COMMENTS IN CONFIG FILE
 
@@ -26,13 +34,14 @@ class Config:
         self.version = __version__
 
         self.comments += ["Path to the config directory"]
-        self.config_directory = str(Path.home())+"/.config/auto-ytdl/"
+        self.config_directory = str(
+            Path(str(Path.home())+"/"+config_dir+"/auto-ytdl"))
 
         self.comments += ["Path to the user's music library"]
-        self.library_path = str(PurePath(Path.home(), "Music/"))
+        self.library_path = str(str(Path.home()) + "/Music")
 
         self.comments += ["Path to the metadata archive"]
-        self.path_to_metadata = self.config_directory + "metadata_archive.txt"
+        self.path_to_metadata = self.config_directory + "/metadata_archive.txt"
 
         self.comments += ["Not user modifiable. Directory to store temporary files"]
         self.temp_dir = temp_dir
@@ -101,7 +110,7 @@ class Config:
         self.youtube_dl_args = {"ignore-errors": True,
                                 "max-downloads": 500,
                                 "quiet": False,
-                                "download-archive": self.config_directory + "archive.txt",
+                                "download-archive": self.config_directory + "/archive.txt",
                                 "dateafter": date.today().strftime("%Y%m%d"),
                                 "metadata-from-title": "\"%(artist)s - %(title)s\"",
                                 "output": "\"" + self.temp_dir.name + "/%(title)s.%(ext)s\"",
@@ -115,7 +124,8 @@ class Config:
 
     def reset_soft(self):
         # backup
-        self.write(str(Path.home())+"/.config/auto-ytdl/config.toml.backup")
+        self.write(str(Path.home())+self.config_directory +
+                   "/config.toml.backup")
         # restore default config but try to keep some user changes
         clean = Config()
         # values to preserve
@@ -134,11 +144,11 @@ class Config:
 
     def load(self):
         # check if config file already present, if so load it, else create it
-        config_file_path = self.config_directory+"config.toml"
+        config_file_path = self.config_directory+"/config.toml"
 
         # because we don't want to save comments as a option in config file, need to pass it from default
         comment_save = self.comments.copy()
-        if os.path.isfile(config_file_path):
+        if Path(config_file_path).exists():
             config_dict = toml.load(config_file_path)
             self.__dict__ = config_dict
             self.__dict__["comments"] = comment_save
@@ -150,25 +160,29 @@ class Config:
 
             self.temp_dir = tempfile.TemporaryDirectory()
             self.youtube_dl_args["output"] = "\"" + \
-                self.temp_dir.name + "/%(title)s.%(ext)s\""
+                str(Path(self.temp_dir.name + "/%(title)s.%(ext)s")) + "\""
             if not self.clean_exit:
                 # so evertyhing will be way slower next time but
                 # we will not miss any music
-                os.system("rm -f " + self.config_directory+"archive.txt")
+                Path(self.config_directory+"/archive.txt").unlink()
             self.write()
         else:
             print("Hey! It looks like it's the first time you are using auto-ytdl.\nYou may want to see the help menu and edit the configuration to suit your needs!\n\n\n")
             self.write()
 
-    def write(self, path=str(Path.home())+"/.config/auto-ytdl/config.toml"):
+    def write(self, path=""):
+        if path == "":
+            path = str(Path(self.config_directory + "/config.toml"))
+
         config_file_path = path
         with open(config_file_path, "w+") as f:
 
             coms = Config().comments.copy()
 
             to_write = vars(self)
-            to_write.pop("comments", None)
+            comments_save = to_write.pop("comments", None)
             conf = toml.dumps(to_write).splitlines()
+            self.__dict__["comments"] = comments_save
 
             # pad so lack of comment does not suppress options because of zip length mismatch
             if len(conf) > len(coms):
@@ -182,3 +196,4 @@ class Config:
                 f.write("\n")
 
             f.write("#PUT YOUR YOUTUBE-DL \"--\" OPTIONS / OPTION-ARGUMENTS BELOW\n")
+            f.write("# (note that comments will be removed; it allows me to easily update this config file, without breaking too much your changes)")
