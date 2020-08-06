@@ -94,7 +94,6 @@ class AYTDL:
                 clean(temp_dir_path+"/" + filename, self.config)
 
     def embed_thumbnail(self):
-        # TODO fix mp3, opus ok
 
         temp_dir_path = self.config.temp_dir.name
         for filename in os.listdir(temp_dir_path):
@@ -120,8 +119,8 @@ class AYTDL:
                 if should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
                     print("[moving to library] " + filename)
-                    os.system("mv " + "\""+temp_dir_path+"/" + filename + "\"" +
-                              " " + "\"" + self.config.library_path + "/" + filename+"\"")
+                    shutil.move("\"" + temp_dir_path+"/" + filename + "\"",
+                                "\""+self.config.library_path + "/" + filename+"\"")
 
 
 # ##END OF AYTDL CLASS
@@ -247,7 +246,7 @@ def main():
 
     # EDIT COMMAND
     elif command == "edit":
-        config_file_path = str(Path.home())+"/.config/auto-ytdl/config.toml"
+        config_file_path = str(Path(a.config.config_directory+"/config.toml"))
         os.system("xdg-open " + config_file_path)
     else:
         print("Invalid command")

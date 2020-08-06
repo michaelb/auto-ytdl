@@ -1,6 +1,5 @@
 from pathlib import Path
 import tempfile
-import os
 import platform
 import toml
 from datetime import date
@@ -164,7 +163,7 @@ class Config:
             if not self.clean_exit:
                 # so evertyhing will be way slower next time but
                 # we will not miss any music
-                Path(self.config_directory+"/archive.txt").unlink()
+                Path(self.config_directory+"/archive.txt").unlink(missing_ok=True)
             self.write()
         else:
             print("Hey! It looks like it's the first time you are using auto-ytdl.\nYou may want to see the help menu and edit the configuration to suit your needs!\n\n\n")
