@@ -10,10 +10,11 @@ try:
     import music_tag
     import mutagen
     import argparse
+    import toml
 except Exception:
     print("Fetching auto-ytdl pip dependencies. (install as --user)")
     os.system(
-        "pip install --user pathlib datetime music_tag mutagen argparse")
+        "pip install --user pathlib datetime music_tag mutagen argparse toml")
     print("Done, please re-launch auto-ytdl")
     sys.exit(0)
 
