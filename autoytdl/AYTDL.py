@@ -4,6 +4,7 @@ import re
 import shutil
 import tempfile
 import subprocess
+import platform
 try:
     from pathlib import Path
     from datetime import date
@@ -67,7 +68,7 @@ class AYTDL:
             return line
 
         # in case url contains special shell symbols
-        if not ((url[0] == "\"" or url[0] == "'") and (url[-1] == "'" or url[-1] == "\"")):
+        if not ((url[0] == "\"" or url[-1] == "\"") and (url[0] == "'" or url[-1] == "'")):
             url = "\""+url+"\""
 
         # here we run youtube-dl
@@ -249,11 +250,20 @@ def main():
     elif command == "list":
         for url in a.config.url_list:
             print(url)
+        if not a.config.url_list:  # empty list
+            print("[list empty]")
 
     # EDIT COMMAND
     elif command == "edit":
-        config_file_path = str(Path(a.config.config_directory+"/config.toml"))
-        os.system("xdg-open " + config_file_path)
+        config_file_path = str(
+            Path(a.config.config_directory) / Path("config.toml"))
+
+        if platform.system() == "Linux" or platform.system() == "Darwin":
+            os.system("xdg-open " + str(Path(config_file_path)))
+        elif platform.system() == "Windows":
+            os.system("Notepad " + str(Path(config_file_path)))
+        else:
+            raise Exception("Unsupported platform")
     else:
         print("Invalid command")
 

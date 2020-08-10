@@ -34,10 +34,10 @@ class Config:
 
         self.comments += ["Path to the config directory"]
         self.config_directory = str(
-            Path(str(Path.home())+"/"+config_dir+"/auto-ytdl"))
+            Path.home() / Path(config_dir) / Path("auto-ytdl"))
 
         self.comments += ["Path to the user's music library"]
-        self.library_path = str(str(Path.home()) + "/Music")
+        self.library_path = str(Path.home() / Path("Music"))
 
         self.comments += ["Path to the metadata archive"]
         self.path_to_metadata = self.config_directory + "/metadata_archive.txt"
@@ -89,42 +89,48 @@ class Config:
         self.comments += [""]  # padding
         self.comments += [
             "youtube-dl arguments: double-dash \"--\" arguments may be appended at the END of the config file:\n#write: \"option name without --\" = true/false/value\n#-> true to activate a flag\n#-> false to make it not appear in the command\n#-> value (or \"value\" for string values) to set the option argument"]
-        self.comments += ["Don't stop downloading if one of many downloads had an error"]
+        self.comments += [
+            "Don't stop downloading if one of many downloads had an error"]
         self.comments += [
             "Never download more than this much at once (prevent mistakes)"]
         self.comments += ["No ouptput from youtube-dl"]
         self.comments += ["Not user modifiable"]
         self.comments += ["Date (yyyymmdd) of last download, can be user modified, but not on a regular basis. Changing this will make auto-ytdl think you don't have updated since %dateafter"]
-        self.comments += ["Should really not be modified, as most of the video naming follow this convention, unless you know what you are doing"]
+        self.comments += [
+            "Should really not be modified, as most of the video naming follow this convention, unless you know what you are doing"]
         self.comments += ["Temp directory, not user-modifiable"]
-        self.comments += ["Don't set to false unless you don't want title/artist metadata"]
+        self.comments += [
+            "Don't set to false unless you don't want title/artist metadata"]
         self.comments += [
             "can be toggled true/false if you encounter youtube-dl err 429 (too much consecutive downloads"]
+        self.comments += ["Not user modifiable"]
         self.comments += ["Not user modifiable"]
         self.comments += [
             "Ideally, should only be \"best\" (default) or \"mp3\" so the eventual thumbnail is correctly embedded most of the time (opus and mp3 format are the main focus of dev)"]
         self.comments += ["You should not change this"]
         self.comments += ["Not user modifiable"]
-        self.comments += ["Do not download more than this much music from one source"]
+        self.comments += [
+            "Do not download more than this much music from one source"]
         self.youtube_dl_args = {"ignore-errors": True,
                                 "max-downloads": 500,
                                 "quiet": False,
                                 "download-archive": self.config_directory + "/archive.txt",
                                 "dateafter": date.today().strftime("%Y%m%d"),
                                 "metadata-from-title": "\"%(artist)s - %(title)s\"",
-                                "output": "\"" + self.temp_dir.name + "/%(title)s.%(ext)s\"",
+                                "output": "\"" + str(Path(self.temp_dir.name) / Path("%(title)s.%(ext)s")) + "\"",
                                 "add-metadata": True,
                                 "force-ipv4": True,
                                 "extract-audio": True,
                                 "audio-format": "best",
                                 "audio-quality": 0,
                                 "write-thumbnail": True,
+                                "restrict-filename": True,
                                 "playlist-end": 150}
 
     def reset_soft(self):
         # backup
-        self.write(str(Path.home())+self.config_directory +
-                   "/config.toml.backup")
+        self.write(str(Path.home() /
+                       Path(self.config_directory) / Path("config.toml.backup")))
         # restore default config but try to keep some user changes
         clean = Config()
         # values to preserve
@@ -148,7 +154,7 @@ class Config:
         # because we don't want to save comments as a option in config file, need to pass it from default
         comment_save = self.comments.copy()
         if Path(config_file_path).exists():
-            config_dict = toml.load(config_file_path)
+            config_dict = toml.load(str(Path(config_file_path)))
             self.__dict__ = config_dict
             self.__dict__["comments"] = comment_save
 
@@ -159,11 +165,12 @@ class Config:
 
             self.temp_dir = tempfile.TemporaryDirectory()
             self.youtube_dl_args["output"] = "\"" + \
-                str(Path(self.temp_dir.name + "/%(title)s.%(ext)s")) + "\""
+                str(Path(self.temp_dir.name) / Path("%(title)s.%(ext)s")) + "\""
             if not self.clean_exit:
                 # so evertyhing will be way slower next time but
                 # we will not miss any music
-                Path(self.config_directory+"/archive.txt").unlink(missing_ok=True)
+                (Path(self.config_directory) /
+                 Path("archive.txt")).unlink(missing_ok=True)
             self.write()
         else:
             print("Hey! It looks like it's the first time you are using auto-ytdl.\nYou may want to see the help menu and edit the configuration to suit your needs!\n\n\n")
@@ -171,7 +178,7 @@ class Config:
 
     def write(self, path=""):
         if path == "":
-            path = str(Path(self.config_directory + "/config.toml"))
+            path = str(Path(self.config_directory) / Path("config.toml"))
 
         config_file_path = path
         with open(config_file_path, "w+") as f:
