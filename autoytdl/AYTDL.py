@@ -120,11 +120,10 @@ class AYTDL:
                 if should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
                     print("[moving to library] " + filename)
-                    shutil.move("\"" + temp_dir_path+"/" + filename + "\"",
-                                "\""+self.config.library_path + "/" + filename+"\"")
-
-
+                    shutil.move(str(Path(temp_dir_path+"/" + filename)),
+                                str(Path(self.config.library_path + "/" + filename)))
 # ##END OF AYTDL CLASS
+
 
 def is_url(string):
     youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
@@ -160,8 +159,14 @@ def main():
 
         # flag to check if potentially dangerous -i or -f, and decide if date update
         full_update = False
+        # make the possibly string argument into a list, so identical two output if to args
         if not type(urls_to_update) is list:
             urls_to_update = [urls_to_update]
+
+        youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
+        if all(iter([not re.match(youtube_channel_regex, string) for string in urls_to_update])):
+            # then every video is NOT a channel and we can imply --include-old
+            dateafter = 1960101
         # list is empty, full update
         if not urls_to_update and not a.args.get("playing"):
             full_update = True
