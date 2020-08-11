@@ -258,8 +258,10 @@ def main():
         config_file_path = str(
             Path(a.config.config_directory) / Path("config.toml"))
 
-        if platform.system() == "Linux" or platform.system() == "Darwin":
+        if platform.system() == "Linux":
             os.system("xdg-open " + str(Path(config_file_path)))
+        elif platform.system() == "Darwin":
+            os.system("open " + str(Path(config_file_path)))
         elif platform.system() == "Windows":
             os.system("Notepad " + str(Path(config_file_path)))
         else:

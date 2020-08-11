@@ -1,7 +1,16 @@
 # import packaging.version
 # import packaging.specifiers
-import packaging.requirements
 # import packaging.markers
+import os
+
+
+# the packaging module is only useful to build the app
+try:
+    import packaging.requirements
+except Exception:
+    print("Fetching auto-ytdl pip dependencies. (install as --user)")
+    os.system("pip install --user packaging")
+
 
 from autoytdl.AYTDL import main
 
