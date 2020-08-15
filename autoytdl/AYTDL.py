@@ -118,7 +118,7 @@ class AYTDL:
         for filename in os.listdir(temp_dir_path):
             if ok(filename) and not filename.endswith(".temp.mp3"):
                 # this manage the metadata archive
-                if should_add(temp_dir_path+"/"+filename, self.config):
+                if self.config.video_mode or should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
                     print("[moving to library] " + filename)
                     shutil.move(str(Path(temp_dir_path+"/" + filename)),
@@ -220,7 +220,8 @@ def main():
 
         if a.config.embed_thumbnail:
             a.embed_thumbnail()
-        a.clean_tags()
+        if not a.config.video_mode:
+            a.clean_tags()
         a.move_to_library()
         if full_update:
             a.config.youtube_dl_args["dateafter"] = date.today().strftime(
