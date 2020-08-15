@@ -107,7 +107,7 @@ class AYTDL:
             if filename.endswith(".opus") and not filename.endswith(".temp.opus"):
                 embed_opus(temp_dir_path, filename)
 
-    def move_to_library(self):
+    def move_to_library(self, directory):
         def ok(filename):
             for ext in self.config.valid_extensions:
                 if filename.endswith(ext):
@@ -121,10 +121,9 @@ class AYTDL:
                 if should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
                     print("[moving to library] " + filename)
+                    os.system("mkdir -p \"" + self.config.library_path + "/" + directory + "/\"") # TODO: support multi platform
                     shutil.move(str(Path(temp_dir_path+"/" + filename)),
-                                str(Path(self.config.library_path + "/" + filename)))
-# ##END OF AYTDL CLASS
-
+                                str(Path(self.config.library_path + "/" + directory + "/" + filename)))
 
 def is_url(string):
     youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
@@ -221,7 +220,7 @@ def main():
         if a.config.embed_thumbnail:
             a.embed_thumbnail()
         a.clean_tags()
-        a.move_to_library()
+        a.move_to_library(url.split("/")[4])
         if full_update:
             a.config.youtube_dl_args["dateafter"] = date.today().strftime(
                 "%Y%m%d")
