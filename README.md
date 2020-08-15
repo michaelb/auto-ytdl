@@ -55,6 +55,7 @@ However, [olivia](https://github.com/keshavbhatt/olivia) is a music player that 
 It's more of an all-rounder and I believe auto-ytdl + your favorite music player may be a better combo _if your use case is similar to mine_.
 
 [deserves mention for existing]
+
 The closest idea I could find is MediaHuman's (paid, expensive, closed-source) Youtube-Downloader: as of writing, it seems to have 'tracking' capabilities, and little explications given.
 All this looked a bit fishy, though it has a nice GUI. It also only offers a .deb package for "GNU/Linux OS" and .deb support for Arch (btw I use Arch) is not first-class.
 

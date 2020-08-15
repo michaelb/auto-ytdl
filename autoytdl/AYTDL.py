@@ -4,16 +4,18 @@ import re
 import shutil
 import tempfile
 import subprocess
+import platform
 try:
     from pathlib import Path
     from datetime import date
     import music_tag
     import mutagen
     import argparse
+    import toml
 except Exception:
     print("Fetching auto-ytdl pip dependencies. (install as --user)")
     os.system(
-        "pip install --user pathlib datetime music_tag mutagen argparse")
+        "pip install --user pathlib datetime music_tag mutagen argparse toml")
     print("Done, please re-launch auto-ytdl")
     sys.exit(0)
 
@@ -21,6 +23,7 @@ from autoytdl.config import Config
 from autoytdl.arguments import get_args
 from autoytdl.metadata_manager import should_add
 from autoytdl.name_cleaner import clean
+from autoytdl.thumbnail_embedder import embed_mp3, embed_opus
 
 
 class AYTDL:
@@ -65,7 +68,7 @@ class AYTDL:
             return line
 
         # in case url contains special shell symbols
-        if not ((url[0] == "\"" or url[0] == "'") and (url[-1] == "'" or url[-1] == "\"")):
+        if not ((url[0] == "\"" or url[-1] == "\"") and (url[0] == "'" or url[-1] == "'")):
             url = "\""+url+"\""
 
         # here we run youtube-dl
@@ -93,44 +96,16 @@ class AYTDL:
                 clean(temp_dir_path+"/" + filename, self.config)
 
     def embed_thumbnail(self):
-        # TODO fix mp3, opus ok
 
         temp_dir_path = self.config.temp_dir.name
         for filename in os.listdir(temp_dir_path):
             # MP3 files
             if filename.endswith(".mp3") and not filename.endswith(".temp.mp3"):
+                embed_mp3(temp_dir_path, filename)
 
-                if os.path.isfile(temp_dir_path + "/"+filename[:-4]+".webp"):
-                    os.system("ffmpeg -i \"" + temp_dir_path + "/" +
-                              filename[:-4] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-4] + ".jpg\"  -v 0 -y")
-
-                if os.path.isfile(temp_dir_path + "/"+filename[:-4]+".jpg"):
-                    # create temp file as ffmpeg cannot add thmbnail in-place
-                    os.system("mv \"" + temp_dir_path + "/"+filename +
-                              "\" \"" + temp_dir_path + "/"+filename[:-4]+".temp.mp3\"")
-                    os.system("ffmpeg -i \"" + temp_dir_path + "/" + filename[:-4]+".temp.mp3" + "\" -i \"" + temp_dir_path + "/" +
-                              filename[:-4]+".jpg\"" + " -v 0 -y -map 0:0 -map 1:0 -codec copy -id3v2_version 3 -metadata:s:v title=\"Album cover\" -metadata:s:v comment=\"Cover (front)\" \"" + temp_dir_path + "/" + filename + "\"")
-
-                    os.system("rm -f \"" + temp_dir_path +
-                              "/"+filename[:-4]+".temp.mp3\"")
-
-                    # OPUS files
+            # OPUS files
             if filename.endswith(".opus") and not filename.endswith(".temp.opus"):
-                # convert webp
-                if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".webp"):
-                    os.system("ffmpeg -i \"" + temp_dir_path + "/" +
-                              filename[:-5] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-5] + ".jpg\"  -v 0 -y")
-                # if there is a jpg file, embed it
-                if os.path.isfile(temp_dir_path + "/"+filename[:-5]+".jpg"):
-                    # problem if ' in filename so temp move
-                    os.system("mv \""+temp_dir_path + "/" +
-                              filename[:-5] + ".jpg\""+" "+temp_dir_path + "/" + "in.jpg")
-                    os.system("mv \""+temp_dir_path + "/" +
-                              filename + "\" " + temp_dir_path + "/" + "in.opus")
-                    os.system("kid3-cli -c 'set picture:\"in.jpg\"" +
-                              " \"desc\"' \"" + temp_dir_path + "/" + "in.opus\"")
-                    os.system("mv  "+temp_dir_path + "/" + "in.opus \""+temp_dir_path +
-                              "/" + filename + "\"")
+                embed_opus(temp_dir_path, filename)
 
     def move_to_library(self):
         def ok(filename):
@@ -146,11 +121,10 @@ class AYTDL:
                 if should_add(temp_dir_path+"/"+filename, self.config):
                     # use ffmpeg to copy as it also solve a wrong song length problem
                     print("[moving to library] " + filename)
-                    os.system("mv " + "\""+temp_dir_path+"/" + filename + "\"" +
-                              " " + "\"" + self.config.library_path + "/" + filename+"\"")
-
-
+                    shutil.move(str(Path(temp_dir_path+"/" + filename)),
+                                str(Path(self.config.library_path + "/" + filename)))
 # ##END OF AYTDL CLASS
+
 
 def is_url(string):
     youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
@@ -186,8 +160,14 @@ def main():
 
         # flag to check if potentially dangerous -i or -f, and decide if date update
         full_update = False
+        # make the possibly string argument into a list, so identical two output if to args
         if not type(urls_to_update) is list:
             urls_to_update = [urls_to_update]
+
+        youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
+        if all(iter([not re.match(youtube_channel_regex, string) for string in urls_to_update])):
+            # then every video is NOT a channel and we can imply --include-old
+            dateafter = 1960101
         # list is empty, full update
         if not urls_to_update and not a.args.get("playing"):
             full_update = True
@@ -270,11 +250,22 @@ def main():
     elif command == "list":
         for url in a.config.url_list:
             print(url)
+        if not a.config.url_list:  # empty list
+            print("[list empty]")
 
     # EDIT COMMAND
     elif command == "edit":
-        config_file_path = str(Path.home())+"/.config/auto-ytdl/config.toml"
-        os.system("xdg-open " + config_file_path)
+        config_file_path = str(
+            Path(a.config.config_directory) / Path("config.toml"))
+
+        if platform.system() == "Linux":
+            os.system("xdg-open " + str(Path(config_file_path)))
+        elif platform.system() == "Darwin":
+            os.system("open " + str(Path(config_file_path)))
+        elif platform.system() == "Windows":
+            os.system("Notepad " + str(Path(config_file_path)))
+        else:
+            raise Exception("Unsupported platform")
     else:
         print("Invalid command")
 
