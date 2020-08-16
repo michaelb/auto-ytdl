@@ -85,6 +85,10 @@ class Config:
             "Embed thumbnail when possible (for opus and mp3 format)"]
         self.embed_thumbnail = True
 
+        self.comments += [
+            "Download as a video. When true, all music tag features are disable"]
+        self.video_mode = False
+
         # youtube-dl args section
         self.comments += [""]  # padding
         self.comments += [
@@ -134,7 +138,7 @@ class Config:
         # restore default config but try to keep some user changes
         clean = Config()
         # values to preserve
-        for key in ["config_directory", "library_path", "path_to_metadata", "clean_exit", "pre_command", "post_command", "denylist_names", "min_length", "max_length", "url_list", "valid_extensions", "embed_thumbnail"]:
+        for key in ["config_directory", "library_path", "path_to_metadata", "clean_exit", "pre_command", "post_command", "denylist_names", "min_length", "max_length", "url_list", "valid_extensions", "embed_thumbnail", "video_mode"]:
             if key in self.__dict__:
                 clean.__dict__[key] = self.__dict__[key]
 
