@@ -128,11 +128,12 @@ class AYTDL:
 
 def is_url(string):
     youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
-    if re.match(youtube_channel_regex, string):
+    soundcloud_channel_regex = "(https?://)(soundcloud.com)/"
+    if re.match(youtube_channel_regex, string) or re.match(soundcloud_channel_regex, string):
         return True
     else:
         answer = input("Warning:\n" + string + "\nThe provided url \
-does not look like a typical youtube channel \
+does not look like a typical youtube/soundcloud channel \
 url, add it anyway? [Y/n]:")
         if answer == "Y" or answer == "y" or answer == "Yes" or answer == "yes" or answer == "":
             return True

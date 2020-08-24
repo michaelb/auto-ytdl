@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![](https://img.shields.io/badge/Release-v1.1.2-green.svg)
+![](https://img.shields.io/badge/Release-v1.2.0beta-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -10,6 +10,11 @@ aytdl update
 
 And that's it.
 (Some initial setup is required of course, so auto-ytdl knows what music to download, but the most used commands are that simple)
+
+## v1.2.0 changelog
+
+> Soundcloud is now excplicitly supported, though the user should tweak config options to not be limited to free-tier low quality audio.
+> Windows experimental support
 
 # Table of Contents
 
@@ -44,8 +49,6 @@ Plus, auto-ytdl comes with management of duplicates of newly-downloaded songs, b
 
 \* (_yes_ I know youtube and other video streaming services do not have extremely good audio, but it's out of convenience): hardcore audiophile abstain
 
-\*\* There are plans to add suport for soundclound and music-specific platforms, you can put a feature request, but those will not be implemented before version 2.x.x
-
 # Doesn't it exist already?
 
 No.
@@ -74,7 +77,7 @@ see also [Usage](#usage) and [Examples](#examples)
 # Features
 
 - Auto-download of all new music from a simple command (music-only download, best quality available (often opus format ~160kbps for youtube), no conversion by default)
-- Add/remove/list all your favorite music providers; mainly tested on youtube channels, but should work on playlist, and other video platforms
+- Add/remove/list all your favorite music providers; mainly tested on youtube and soundcloud channels, but should work on playlist, and other video platforms
 - Clean tags, so e.g. the displayed artist name does _not_ look like "Nirvana (lyrics) [Music video] official" but just "Nirvana"
 - Filter by tags so only 'true' and unique songs (according to config) end up in your library
 - Ignore the filter if you really want that weird video
@@ -133,6 +136,9 @@ aytdl edit
 
 #add Mr SuicideSheep to followed channels
 aytdl add https://www.youtube.com/channel/UC5nc_ZtjKW1htCVZVRxlQAQ
+
+#also work with soundcloud, and probably other video platforms such as dailymotion
+aytdl add https://soundcloud.com/nemenmusic
 
 #see all the added sources
 aytdl list
