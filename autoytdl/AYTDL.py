@@ -278,7 +278,7 @@ def main():
     a.config.write()
 
     # post-command
-    if a.config.post_command != "" & & command == "update":  # do not run post command for other commands
+    if a.config.post_command != "" and command == "update":  # do not run post command for other commands
 
         print("[running post_command] " + a.config.post_command)
         exit_code = os.system(a.config.post_command)
