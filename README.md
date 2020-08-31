@@ -104,12 +104,12 @@ Some python modules, such as music-tag and mutagen, will be pulled automatically
 (Install the dependencies first)
 
 - auto-ytdl is available in the AUR
-  [here](https://aur.archlinux.org/packages/auto-ytdl-git/)
+  [here](https://aur.archlinux.org/packages/auto-ytdl-git/) (you can get executables from the latest [release](https://github.com/michaelb/auto-ytdl/tag/v1.2.0) )
 - install from source:
 
 ```
 git clone https://github.com/michaelb/auto-ytdl
-cd auto-ytdl
+cd auto-ytdl                     #you can run ./aytdl.py if you don't wish to install
 pip install --user .
 
 # to uninstall if installed manually
