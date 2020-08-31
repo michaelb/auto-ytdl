@@ -93,10 +93,9 @@ see also [Usage](#usage) and [Examples](#examples)
 - ffmpeg (need to be in the PATH or current folder)
 - python3-pip (for manual install / build)
 
-  (optionnal dependency for better OPUS handling)
+(optionnal dependency for better OPUS handling, (windows users, don't bother))
 
-- kid3-cli [AUR](https://aur.archlinux.org/packages/kid3-cli/) [website](https://kid3.kde.org/) (need to be in PATH, (whole folder containing kid3, kid3-cli, dlls etc... need to be in PATH for windows)
-  For every feature to work, you need a XDG-compliant desktop environment.
+- kid3-cli [AUR](https://aur.archlinux.org/packages/kid3-cli/) [website](https://kid3.kde.org/)
 
 Some python modules, such as music-tag and mutagen, will be pulled automatically
 
@@ -166,3 +165,13 @@ aytdl update --include-old https://www.youtube.com/channel/UC5nc_ZtjKW1htCVZVRxl
 aytdl update https://www.youtube.com/watch?v=PM0HqmptYlY --force
 
 ```
+
+### Known Issues & workaround (windows-only)
+
+Windows has trouble with embedding thumbnails with opus and mp3.
+
+MP3 issues with thumbnails migth be bypassed by adding:
+
+embed-thumnail = true
+
+to the end of the config file
