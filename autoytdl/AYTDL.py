@@ -165,10 +165,7 @@ def main():
         if not type(urls_to_update) is list:
             urls_to_update = [urls_to_update]
 
-        youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
-        if all(iter([not re.match(youtube_channel_regex, string) for string in urls_to_update])):
-            # then every video is NOT a channel and we can imply --include-old
-            dateafter = 1960101
+        # youtube_channel_regex = "(https?://)?(www.)?youtu((.be)|(be..{2,5}))/((user)|(channel))/"
         # list is empty, full update
         if not urls_to_update and not a.args.get("playing"):
             full_update = True
