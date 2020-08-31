@@ -4,9 +4,10 @@ from pathlib import Path
 
 def embed_mp3(temp_dir_path, filename):
     # convert webp thumbnail to jpg
+    # convert webp to jpg
     if Path(temp_dir_path + "/"+filename[:-4]+".webp").exists():
-        os.system("ffmpeg -i \"" + temp_dir_path + "/" +
-                  filename[:-4] + ".webp\"" + " \"" + temp_dir_path + "/" + filename[:-4] + ".jpg\"  -v 0 -y")
+        os.system("ffmpeg -i \"" + str(Path(temp_dir_path + "/" + filename[:-5] + ".webp\"")) + " \"" + str(
+            Path(temp_dir_path + "/" + filename[:-4] + ".jpg"))+"\"  -v 0 -y")
 
     if Path(temp_dir_path + "/"+filename[:-4]+".jpg").exists():
         # create temp file as ffmpeg cannot add thmbnail in-place

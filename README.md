@@ -14,7 +14,7 @@ And that's it.
 ## v1.2.0 changelog
 
 > Soundcloud is now excplicitly supported, though the user should tweak config options to not be limited to free-tier low quality audio.
-> Windows experimental support
+> Windows support
 
 # Table of Contents
 
@@ -89,12 +89,14 @@ see also [Usage](#usage) and [Examples](#examples)
 
 # Dependencies
 
-- youtube-dl
-- ffmpeg
-- kid3-cli [AUR](https://aur.archlinux.org/packages/kid3-cli/)
+- youtube-dl (need to be in the PATH or current folder)
+- ffmpeg (need to be in the PATH or current folder)
 - python3-pip (for manual install / build)
 
-For every feature to work, you need a XDG-compliant desktop environment.
+  (optionnal dependency for better OPUS handling)
+
+- kid3-cli [AUR](https://aur.archlinux.org/packages/kid3-cli/) [website](https://kid3.kde.org/) (need to be in PATH, (whole folder containing kid3, kid3-cli, dlls etc... need to be in PATH for windows)
+  For every feature to work, you need a XDG-compliant desktop environment.
 
 Some python modules, such as music-tag and mutagen, will be pulled automatically
 

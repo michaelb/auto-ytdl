@@ -121,8 +121,8 @@ class Config:
                                 "add-metadata": True,
                                 "force-ipv4": True,
                                 "extract-audio": True,
-                                "audio-format": "best",
                                 "audio-quality": 0,
+                                "audio-format": "best",
                                 "write-thumbnail": True,
                                 "restrict-filename": True,
                                 "playlist-end": 150}
