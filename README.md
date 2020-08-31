@@ -160,6 +160,9 @@ aytdl update
 #download rick's astley famous song
 aytdl update https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
+#download rick's astley famous song while it's playing in chrome (linux-only)
+aytdl update -p
+
 #download all music ever from Mr SuicideSheep, no just new ones
 aytdl update --include-old https://www.youtube.com/channel/UC5nc_ZtjKW1htCVZVRxlQAQ
 
