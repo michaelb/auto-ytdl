@@ -13,7 +13,7 @@ And that's it.
 
 ## v1.2.0 changelog
 
-> Soundcloud is now excplicitly supported, though the user should tweak config options to not be limited to free-tier low quality audio.
+> Soundcloud is now explicitly supported, though the user should tweak config options to not be limited to free-tier low quality audio.
 > Windows support
 
 # Table of Contents
@@ -91,7 +91,7 @@ see also [Usage](#usage) and [Examples](#examples)
 
 - youtube-dl (need to be in the PATH or current folder)
 - ffmpeg (need to be in the PATH or current folder)
-- python3-pip (for manual install / build)
+- python3-pip (need to be in the PATH or current folder)
 
 (optionnal dependency for better OPUS handling, (windows users, don't bother))
 
@@ -100,6 +100,8 @@ see also [Usage](#usage) and [Examples](#examples)
 Some python modules, such as music-tag and mutagen, will be pulled automatically
 
 # Install
+
+(Install the dependencies first)
 
 - auto-ytdl is available in the AUR
   [here](https://aur.archlinux.org/packages/auto-ytdl-git/)
@@ -168,10 +170,11 @@ aytdl update https://www.youtube.com/watch?v=PM0HqmptYlY --force
 
 ### Known Issues & workaround (windows-only)
 
-Windows has trouble with embedding thumbnails with opus and mp3.
+On Windows, aytdl has trouble with embedding thumbnails with opus and mp3.
 
 MP3 issues with thumbnails migth be bypassed by adding:
 
 embed-thumnail = true
 
-to the end of the config file
+to the end of the config file.
+It makes youtube-dl the one in charge of embedding the thumbnail in the mp3, and it should work great!!
