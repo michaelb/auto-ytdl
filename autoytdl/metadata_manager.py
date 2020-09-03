@@ -92,10 +92,12 @@ def can_be_music(audio_tuple, config):
 
 def should_add(filepath, config):
     list_tags = openlist(config.path_to_metadata)
+    if config.force:
+        return True
 
     instanceaudio = list(openaudio(str(Path(filepath))))
 
-    if not can_be_music(instanceaudio, config) and not config.force:
+    if not can_be_music(instanceaudio, config):
         print("[probably not a music file, not adding] ", tuple(instanceaudio))
         return False
 
@@ -103,7 +105,7 @@ def should_add(filepath, config):
         instanceaudio[i] = str(significant_words(str(instanceaudio[i])))
     tuple_audio = tuple(instanceaudio)
 
-    if inlist(tuple_audio, list_tags) and not config.force:
+    if inlist(tuple_audio, list_tags):
         print("[already present in metadata archive, skipping]", tuple_audio)
         return False
     else:
