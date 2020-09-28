@@ -42,8 +42,11 @@ def equal(m1, m2):
     if m1[1] == m2[1]:
         i = i * 10
 
-    if abs(float(m2[2]) - float(m1[2])) < 15:
-        i = i * 4
+    try:
+        if abs(float(m2[2]) - float(m1[2])) < 15:
+            i = i * 4
+    except Exception:
+        i = i / 4
 
     if m1[1] in m2[1]:
         i = i*5
