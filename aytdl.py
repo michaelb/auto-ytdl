@@ -9,7 +9,7 @@ try:
     import packaging.requirements
 except Exception:
     print("Fetching auto-ytdl pip dependencies. (install as --user)")
-    os.system("pip install --user packaging")
+    os.system("python -m pip install --user packaging")
 
 
 from autoytdl.AYTDL import main

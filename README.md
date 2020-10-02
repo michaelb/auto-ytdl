@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![](https://img.shields.io/badge/Release-v1.2.2-green.svg)
+![](https://img.shields.io/badge/Release-v1.2.3-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -11,10 +11,13 @@ aytdl update
 And that's it.
 (Some initial setup is required of course, so auto-ytdl knows what music to download, but the most used commands are that simple)
 
-## v1.2.0 changelog
+## v1.2.3 changelog
 
 > Soundcloud is now explicitly supported, though the user should tweak config options to not be limited to free-tier low quality audio.
+
 > Windows support
+
+> fix music with no length bug
 
 # Table of Contents
 
@@ -91,13 +94,13 @@ see also [Usage](#usage) and [Examples](#examples)
 
 - youtube-dl (need to be in the PATH or current folder)
 - ffmpeg (need to be in the PATH or current folder)
-- python3-pip (need to be in the PATH or current folder)
+- pip/python3-pip (need to be in the PATH or current folder)
 
 (optionnal dependency for better OPUS handling, (windows users, don't bother))
 
 - kid3-cli [AUR](https://aur.archlinux.org/packages/kid3-cli/) [website](https://kid3.kde.org/)
 
-Some python modules, such as music-tag and mutagen, will be pulled automatically
+Some python modules, such as music-tag and mutagen, will be pulled automatically. If that step fails, you can run `pip install -r dependencies.txt` (or `python3-pip ....`)
 
 # Install
 

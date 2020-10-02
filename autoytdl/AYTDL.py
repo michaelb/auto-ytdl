@@ -15,7 +15,7 @@ try:
 except Exception:
     print("Fetching auto-ytdl pip dependencies. (install as --user)")
     os.system(
-        "pip install --user pathlib datetime music_tag mutagen argparse toml")
+        "python -m pip install --user pathlib datetime music_tag mutagen argparse toml")
     print("Done, please re-launch auto-ytdl")
     sys.exit(0)
 
