@@ -107,12 +107,12 @@ Some python modules, such as music-tag and mutagen, will be pulled automatically
 (Install the dependencies first)
 
 - auto-ytdl is available in the AUR
-  [here](https://aur.archlinux.org/packages/auto-ytdl-git/)
+  [here](https://aur.archlinux.org/packages/auto-ytdl-git/) (you can get executables from the latest [release](https://github.com/michaelb/auto-ytdl/releases/tag/v1.2.0) )
 - install from source:
 
 ```
 git clone https://github.com/michaelb/auto-ytdl
-cd auto-ytdl
+cd auto-ytdl                     #you can run ./aytdl.py if you don't wish to install
 pip install --user .
 
 # to uninstall if installed manually
@@ -162,6 +162,9 @@ aytdl update
 
 #download rick's astley famous song
 aytdl update https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+#download rick's astley famous song while it's playing in chrome (linux-only)
+aytdl update -p
 
 #download all music ever from Mr SuicideSheep, no just new ones
 aytdl update --include-old https://www.youtube.com/channel/UC5nc_ZtjKW1htCVZVRxlQAQ
