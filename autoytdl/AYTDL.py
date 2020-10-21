@@ -207,7 +207,7 @@ def main():
             urls_to_update = []
 
             current = subprocess.check_output(
-                "strings \""+str(Path.home())+"/.config/google-chrome/Default/Current Session\" | grep -E \"^https?://www.youtube\"  | tail -1", shell=True)
+                "strings "+str(Path.home())+"/.config/google-chrome/Default/Sessions/Session* | grep -E \"^https?://www.youtube\"  | tail -1", shell=True)
             if current != b'' and current != '':
                 urls_to_update = [str(current)[2:-3]]
 
