@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![](https://img.shields.io/badge/Release-v1.2.4-green.svg)
+![](https://img.shields.io/badge/Release-v1.2.5-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -11,7 +11,7 @@ aytdl update
 And that's it.
 (Some initial setup is required of course, so auto-ytdl knows what music to download, but the most used commands are that simple)
 
-## v1.2.4 changelog
+## v1.2.5 changelog
 
 > Soundcloud is now explicitly supported, though the user should tweak config options to not be limited to free-tier low quality audio.
 
@@ -20,6 +20,7 @@ And that's it.
 > fix music with no length bug
 
 > Fix --playing option not working in chrome 86
+> Youtube-dl dependency is replaced by youtube-dlc since former was not updated to a working version yet. I expect youtube-dlc to release fixes faster now that the whole RIAA thing has seriously hurt youtube-dl
 
 # Table of Contents
 
@@ -94,7 +95,7 @@ see also [Usage](#usage) and [Examples](#examples)
 
 # Dependencies
 
-- youtube-dl (need to be in the PATH or current folder)
+- youtube-dlc (need to be in the PATH or current folder)
 - ffmpeg (need to be in the PATH or current folder)
 - pip/python3-pip (need to be in the PATH or current folder)
 

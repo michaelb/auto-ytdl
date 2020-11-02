@@ -19,7 +19,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/michaelb/auto-ytdl",
     packages=find_namespace_packages(),
-    install_requires=['youtube-dl', 'ffmpeg',
+    install_requires=['youtube-dlc', 'ffmpeg',
                       'toml', 'pathlib', 'argparse', 'toml', 'music_tag'],
     entry_points={
         'console_scripts': [
