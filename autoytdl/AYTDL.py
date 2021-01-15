@@ -72,7 +72,12 @@ class AYTDL:
             url = "\""+url+"\""
 
         # here we run youtube-dl
-        exit_code = os.system("youtube-dlc " +
+        ytdl_exe = None
+        if hasattr(self.config, 'youtube_dl_executable'):
+            ytdl_exe = self.config.youtube_dl_executable
+        if ytdl_exe is None or ytdl_exe == "":
+            ytdl_exe = "youtube-dlc"
+        exit_code = os.system(ytdl_exe + " " +
                               prepare_ytdl_commmand_line(dateafter) + " " + url)
         if exit_code != 0:  # may be a youtube-dl error taht is recoverable
             ask = "Y"
@@ -212,8 +217,8 @@ def main():
                 urls_to_update = [str(current)[2:-3]]
 
         # download for real
-        for url in urls_to_update:
-            print("[downloading] " + url)
+        for url in filter(lambda x: x is not None, urls_to_update):
+            print("[downloading] " + str(url))
             a.download_to_temp(url, dateafter)
 
         if a.config.embed_thumbnail:
