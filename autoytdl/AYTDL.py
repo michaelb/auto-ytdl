@@ -212,8 +212,8 @@ def main():
                 urls_to_update = [str(current)[2:-3]]
 
         # download for real
-        for url in urls_to_update:
-            print("[downloading] " + url)
+        for url in filter(lambda x: x is not None, urls_to_update):
+            print("[downloading] " + str(url))
             a.download_to_temp(url, dateafter)
 
         if a.config.embed_thumbnail:
