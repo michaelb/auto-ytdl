@@ -72,7 +72,12 @@ class AYTDL:
             url = "\""+url+"\""
 
         # here we run youtube-dl
-        exit_code = os.system("youtube-dlc " +
+        ytdl_exe = None
+        if hasattr(self.config, 'youtube_dl_executable'):
+            ytdl_exe = self.config.youtube_dl_executable
+        if ytdl_exe is None or ytdl_exe == "":
+            ytdl_exe = "youtube-dlc"
+        exit_code = os.system(ytdl_exe + " " +
                               prepare_ytdl_commmand_line(dateafter) + " " + url)
         if exit_code != 0:  # may be a youtube-dl error taht is recoverable
             ask = "Y"

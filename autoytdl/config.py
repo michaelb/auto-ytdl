@@ -86,6 +86,10 @@ class Config:
         self.embed_thumbnail = True
 
         # youtube-dl args section
+
+        self.comments += ["youtube-dl executable, path or command"]
+        self.youtube_dl_executable = "youtube-dlc"
+
         self.comments += [""]  # padding
         self.comments += [
             "youtube-dl arguments: double-dash \"--\" arguments may be appended at the END of the config file:\n#write: \"option name without --\" = true/false/value\n#-> true to activate a flag\n#-> false to make it not appear in the command\n#-> value (or \"value\" for string values) to set the option argument"]

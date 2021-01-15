@@ -122,6 +122,10 @@ pip install --user .
 pip uninstall auto-ytdl
 ```
 
+If you don't wish to install, you can directly run:
+```python aytdl.py```
+instead of ```aytdl```
+
 # Usage
 
 Once installed you can run
