@@ -62,8 +62,11 @@ class AYTDL:
             line += " --dateafter " + str(dateafter)
             # special case 2 to ignore archive
             if not self.config.force:
-                line += " --download-archive " + \
-                    self.config.youtube_dl_args["download-archive"] + " "
+                line += " --download-archive " + self.config.youtube_dl_args["download-archive"] + " "
+
+            if self.args.get("playing"):
+                line += " --no-playlist "
+
 
             return line
 
