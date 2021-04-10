@@ -49,7 +49,7 @@ class AYTDL:
         def prepare_ytdl_commmand_line(dateafter):
             line = ""
             for key, value in self.config.youtube_dl_args.items():
-                if key == "datefater" or key == "download-archive":
+                if key == "dateafter" or key == "download-archive":
                     continue
                 line += " "
                 if value is True:
