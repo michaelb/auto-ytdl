@@ -1,6 +1,6 @@
 # auto-ytdl
 
-![](https://img.shields.io/badge/Release-v1.3.0-green.svg)
+![](https://img.shields.io/badge/Release-v1.3.1-green.svg)
 
 I know, _yet another_ youtube-dl wrapper. But this one does something others don't: ability to automate your new music downloads, just like package managers automate your updates.
 
@@ -11,7 +11,9 @@ aytdl update
 And that's it.
 (Some initial setup is required of course, so auto-ytdl knows what music to download, but the most used commands are that simple)
 
-## v1.3.0 changelog
+## v1.3.1 changelog
+
+> important fix for --include-old behavior
 
 > Youtube-dl executable can be configured (still defaults to youtube-dlc)
 
