@@ -12,10 +12,12 @@ try:
     import mutagen
     import argparse
     import toml
+    from notifypy import Notify
+
 except Exception:
     print("Fetching auto-ytdl pip dependencies. (install as --user)")
     os.system(
-        "python -m pip install --user pathlib datetime music_tag mutagen argparse toml")
+        "python -m pip install --user pathlib datetime music_tag mutagen argparse toml notify-py")
     print("Done, please re-launch auto-ytdl")
     sys.exit(0)
 
@@ -222,12 +224,22 @@ def main():
         # download for real
         for url in filter(lambda x: x is not None, urls_to_update):
             print("[downloading] " + str(url))
+            notif = Notify()
+            notif.title = "AYTDL"
+            notif.message= "Started downlaoding " + str(url)
+            notif.send()
+
             a.download_to_temp(url, dateafter)
 
         if a.config.embed_thumbnail:
             a.embed_thumbnail()
         a.clean_tags()
         a.move_to_library()
+        notif = Notify()
+        notif.title = "AYTDL"
+        notif.message= "Download finished"
+        notif.send()
+
         if full_update:
             a.config.youtube_dl_args["dateafter"] = date.today().strftime(
                 "%Y%m%d")

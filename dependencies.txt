@@ -1,4 +1,5 @@
 toml
+notify-py
 pathlib
 argparse
 toml
