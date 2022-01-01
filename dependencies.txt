@@ -1,6 +1,6 @@
 toml
 notify-py
-pathlib
+pathlib3x
 argparse
 toml
 music_tag

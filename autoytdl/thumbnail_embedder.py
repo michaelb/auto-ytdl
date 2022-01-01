@@ -1,5 +1,5 @@
 import os
-from pathlib import Path
+from pathlib3x import Path
 
 
 def embed_mp3(temp_dir_path, filename):

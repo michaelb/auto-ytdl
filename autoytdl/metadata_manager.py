@@ -2,7 +2,7 @@
 
 from sys import argv
 import os
-from pathlib import Path
+from pathlib3x import Path
 from math import floor
 
 import music_tag

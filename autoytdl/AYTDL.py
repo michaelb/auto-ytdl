@@ -6,7 +6,7 @@ import tempfile
 import subprocess
 import platform
 try:
-    from pathlib import Path
+    from pathlib3x import Path
     from datetime import date
     import music_tag
     import mutagen
@@ -17,7 +17,7 @@ try:
 except Exception:
     print("Fetching auto-ytdl pip dependencies. (install as --user)")
     os.system(
-        "python -m pip install --user pathlib datetime music_tag mutagen argparse toml notify-py")
+        "python -m pip install --user pathlib3x datetime music_tag mutagen argparse toml notify-py")
     print("Done, please re-launch auto-ytdl")
     sys.exit(0)
 

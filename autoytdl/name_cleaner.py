@@ -3,7 +3,7 @@
 import sys
 import os
 import re
-from pathlib import Path
+from pathlib3x import Path
 
 import music_tag
 """to clean trash from a audio file tags"""

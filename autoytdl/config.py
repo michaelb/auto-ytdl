@@ -1,4 +1,4 @@
-from pathlib import Path
+from pathlib3x import Path
 import tempfile
 import platform
 import toml

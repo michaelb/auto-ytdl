@@ -20,7 +20,7 @@ setup(
     url="https://github.com/michaelb/auto-ytdl",
     packages=find_namespace_packages(),
     install_requires=['youtube-dlc', 'ffmpeg',
-                      'toml', 'pathlib', 'argparse', 'toml', 'music_tag'],
+                      'toml', 'pathlib3x', 'argparse', 'toml', 'music_tag'],
     entry_points={
         'console_scripts': [
             'aytdl = autoytdl.AYTDL:main'
