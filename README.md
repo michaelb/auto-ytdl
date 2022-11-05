@@ -11,7 +11,11 @@ aytdl update
 And that's it.
 (Some initial setup is required of course, so auto-ytdl knows what music to download, but the most used commands are that simple)
 
-## v1.3.1 changelog
+## v1.3.3 changelog
+
+> --playing now supports music.youtube too
+
+> Licence
 
 > important fix for --include-old behavior
 
@@ -24,7 +28,7 @@ And that's it.
 > fix music with no length bug
 
 > Fix --playing option not working in chrome 86
-> Youtube-dl dependency is replaced by youtube-dlc since former was not updated to a working version yet. I expect youtube-dlc to release fixes faster now that the whole RIAA thing has seriously hurt youtube-dl
+> Youtube-dl dependency is replaced by youtube-dlc since former was not updated to a working version yet. I expect youtube-dlc to release fixes faster now that the whole RIAA thing has seriously hurt youtube-dl. If you execute from source and modify your config to use "youtube-dl", the requirement becomes optional.
 
 # Table of Contents
 
@@ -94,7 +98,7 @@ see also [Usage](#usage) and [Examples](#examples)
 - Can still handle one-shot downloads, or include older songs of (newly discovered) artists
 - Comprehensive config options
 - No missing/skipping/forgetting songs, even if a previous download was interrupted
-- Download video currently playing in chrome/youtube (link that one to a shortcut)
+- Download video currently playing in chrome + youtube / music.youtube
 - Thumbnail embedding supported for mp3 and opus (default) format
 
 # Dependencies
@@ -126,9 +130,8 @@ pip install --user .
 pip uninstall auto-ytdl
 ```
 
-If you don't wish to install, you can directly run:
-```python aytdl.py```
-instead of ```aytdl```
+If you didn't (want to) install, you can directly run:
+`python aytdl.py` instead of `aytdl`
 
 # Usage
 
