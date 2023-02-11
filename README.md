@@ -1,3 +1,7 @@
+# Outdated
+
+I'm not updating this project anymore and some dependencies (kdi3-cli) are now missing in mainstream repos. It may be usable as-is from sources, but there's no guarantee.
+
 # auto-ytdl
 
 ![](https://img.shields.io/badge/Release-v1.3.1-green.svg)
